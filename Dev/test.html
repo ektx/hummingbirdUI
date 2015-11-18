@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>关爱E</title>
+    <!-- 主框架样式 -->
+    <script src="contents/js/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <input type="file" id="chooseImage1" value="上传图片" />
+    <button id="checkJsApi">checkJsApi</button>
+    <button id="previewImage">previewImage</button>
+    <button id="chooseImage">chooseImage</button>
+    <button id="uploadImage">uploadImage</button>
+    <button id="downloadImage">downloadImage</button>
+    <!--<img src='wxLocalResource://464773003969134'/>-->
+    <img id='img_view' src='' width="200" />
+</body>
+<script src="contents/js/jweixin-1.0.0.js"></script>
+<!-- 主js内容 -->
+<script type="text/javascript">
+
+    $(function () {
+        var appId, nonceStr, timestamp, signature, rawString;
+        var code = getQueryString("code");
+        var data = { code: "'" + code + "'" };
+        if (code != null) {
+            $.ajax({
+                type: "GET",
+                async: false, //同步
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: "service/LoveEService.asmx/Getsubscribe",
+                data: data,
+                error: function (error) { alert(error.responseText) },
+                success: function (result) {
+                    if (result.d == "1") {
+                        alert("已关注微信号");
+                    }
+                }
+            });
+        }
+
+        $.ajax({
+            type: "GET",
+            async: false, //同步
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            url: "service/LoveEService.asmx/GetSignPackage",
+            data: { url: "'" + encodeURIComponent(location.href.split('#')[0]) + "'" },
+            error: function (error) { alert(error.responseText) },
+            success: function (result) {
+                if (result != null) {
+                    var data = eval('(' + result.d + ')');
+                    signature = data.signature;
+                    nonceStr = data.nonceStr;
+                    timestamp = data.timestamp;
+                    appId = data.appId;
+                    rawString = data.rawString;
+                }
+            }
+        });
+
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: appId, // 必填，公众号的唯一标识
+            timestamp: timestamp, // 必填，生成签名的时间戳
+            nonceStr: nonceStr, // 必填，生成签名的随机串
+            signature: signature, // 必填，签名，见附录1
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'hideOptionMenu'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function () {
+            wx.hideOptionMenu();
+        });
+        wx.error(function (res) {
+
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+            alert(rawString + "  " + signature);
+        });
+        wx.checkJsApi({
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function (res) {
+                // 以键值对的形式返回，可用的api值true，不可用为false
+                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                alert(res);
+            }
+        });
+
+    });
+        var images = {
+            localId: [],
+            serverId: []
+        };
+
+        document.querySelector('#chooseImage').onclick = function () {
+            wx.chooseImage({
+                success: function (res) {
+                    if (res.localIds.length == 1) {
+                        images.localId = res.localIds;
+                        $('#img_view').attr('src', images.localId);
+                    }
+                }
+            });
+        };
+    document.querySelector('#checkJsApi').onclick = function () {
+        wx.checkJsApi({
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage'],
+            success: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    };
+    document.querySelector('#uploadImage').onclick = function () {
+//        if (images.localId.length == 0) {
+//            alert('请先使用 chooseImage 接口选择图片');
+//            return;
+//        }
+//        var i = 0, length = images.localId.length;
+        // images.serverId = ['3Q0TIU_Ryl46WOGn3Zlm9H66iyBuSZ3AmVwc-YruuRfkcwRZYsbABVh0ydgZQoT3'];
+       function upload() {
+           wx.uploadImage({
+               localId: images.localId[i],
+               success: function (res) {
+                   i++;
+                   alert('已上传：' + i + '/' + length);
+                   images.serverId.push(res.serverId);
+                   if (i < length) {
+                       upload();
+                   }
+               },
+               fail: function (res) {
+                   alert(JSON.stringify(res));
+               }
+           });
+       }
+       upload();
+        if (images.serverId.length > 0) {
+            $.ajax({
+                type: "POST",
+                async: false, //同步
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: "service/LoveEService.asmx/UploadImage",
+                data: JSON.stringify({ 
+                    oldfile: "201509241535289111578.jpg", 
+                    mediaId: images.serverId[0] }),
+                error: function (error) { alert(error.responseText) },
+                success: function (result) {
+                    if (result.d!=null) {
+                        alert(result.d);
+                    }
+                }
+            });
+        }
+    };
+
+    // 5.4 下载图片
+    document.querySelector('#downloadImage').onclick = function () {
+        if (images.serverId.length === 0) {
+            alert('请先使用 uploadImage 上传图片');
+            return;
+        }
+        var i = 0, length = images.serverId.length;
+        images.localId = [];
+        function download() {
+            wx.downloadImage({
+                serverId: images.serverId[i],
+                success: function (res) {
+                    i++;
+                    alert('已下载：' + i + '/' + length);
+                    images.localId.push(res.localId);
+                    if (i < length) {
+                        download();
+                    }
+                }
+            });
+        }
+        download();
+    };
+    document.querySelector('#previewImage').onclick = function () {
+        wx.previewImage({
+            current: 'http://img5.douban.com/view/photo/photo/public/p1353993776.jpg',
+            urls: [
+        'http://img3.douban.com/view/photo/photo/public/p2152117150.jpg',
+        'http://img5.douban.com/view/photo/photo/public/p1353993776.jpg',
+        'http://img3.douban.com/view/photo/photo/public/p2152134700.jpg'
+      ]
+        });
+    };
+    function getOpenId() {
+        $.ajax({
+            type: "GET",
+            async: false, //同步
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            url: "service/LoveEService.asmx/Getsubscribe",
+            data: {},
+            error: function (error) { alert(error.responseText) },
+            success: function (result) {
+                if (result != null) {
+                    alert(result.d);
+                }
+            }
+        });
+    }
+    var upavatar;
+    function chooseImage() {
+        wx.chooseImage({
+            success: function (res) {
+                var id = res.localIds.toString();
+                alert("show id--" + id);
+                upavatar.localId = res.localIds;
+                alert(res.localIds);
+                if (res.localIds.length == 1) {
+                    alert(res.localIds);
+                    wx.uploadImage({
+                        localId: upavatar.localId[0],
+                        isShowProgressTips: 1, //显示进度条
+                        success: function (res) {
+                            upavatar.serverId.push(res.serverId);
+                            var sI = upavatar.serverId;
+                            $('#img_view').attr('src', upavatar.localId);
+                        },
+                        fail: function (res) {
+                            alert(JSON.stringify(res));
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+   
+</script>
+</html>

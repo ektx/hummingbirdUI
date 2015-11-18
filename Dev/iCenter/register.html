@@ -1,0 +1,59 @@
+<div class="app-inner-room">
+<div class="register-mod">
+	<div class="register-status-mod">
+		<svg x="0px" y="0px" width="230px" height="230px" viewBox="0 0 230 230">
+			<defs>
+				<clipPath id="usrbox">
+					<circle cx="117.351" cy="111.769" r="90"/>
+				</clipPath>	
+			</defs>
+			<g class="circle-box"><circle class="circle-z" cx="117.351" cy="111.769" r="90"/></g>
+
+			<g id="svg-usrico">
+				<circle class="circle-z" cx="115" cy="100" r="35"/>
+				<circle class="circle-z" cx="115" cy="230" r="80" clip-path="url(#usrbox)"/>
+			</g>
+			<g id="svg-right">
+				<polyline points="55,127 90,160 170,85 "/>
+			</g>
+			<g id="svg-err">
+				<polyline points="65,60 170,170 "/>
+				<polyline points="65,170 170,60 "/>
+			</g>
+		</svg>
+		<p>注册认证</p>
+	</div>
+
+	<form class="register-form" action="">
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox"><input id="identity" name="identity" type="number"  maxlength="18" placeholder="身份证号" required="required" value="">
+				<i></i></p>
+			</div>
+		</div>
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox"><input id="phone" name="phone" type="number" placeholder="手机号" required="required" value="">
+			<i></i></p>
+			</div>
+		</div>
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox half">
+					<input id="getSecruityVal" type="text" name="vcode" placeholder="验证码" maxlength="6" required="required" autocomplete="off" value="">
+					<i></i>
+				</p><button id="getSecruityCode">获取验证码</button>
+			</div>
+		</div>
+		<input class="btn blue-btn" type="submit" value="提交认证信息" disabled="disabled">
+	</form>
+	<script src="contents/js/checkform.js"></script>
+	<script src="contents/js/main.js"></script>
+
+</div>
+</div>
+<div class="app-children-room">
+</div>

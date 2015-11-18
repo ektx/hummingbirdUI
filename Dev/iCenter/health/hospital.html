@@ -1,0 +1,72 @@
+<div class="app-inner-room">
+	<!-- 医院 -->
+	<div class="nav-box-inner hospital-address-box">
+		<div id="hospital-address"></div>
+
+		<h3>至尊豪华帝王套装ABCD</h3>
+
+		<ul class="nav-ul-box nav-clos-box">
+			<li class="nav-li-box nav-txt-read2">
+				<div class="nav-li-ico">
+				</div>
+				<!-- 文本阅读模式 -->
+				<div class="nav-li-inner nav-txt-read">
+					<div class="nav-link-name">
+						<b>体检日期:</b>
+						<span>2015年8月8 - 10日</span>
+					</div>
+				</div>
+			</li>
+			<li class="nav-li-box nav-txt-read2">
+				<div class="nav-li-ico">
+				</div>
+				<div class="nav-li-inner nav-txt-read">
+					<div class="nav-link-name">
+						<b>体检时间:</b>
+						<span>8:00 - 17:00</span>
+					</div>
+				</div>
+			</li>
+			<li class="nav-li-box nav-txt-read2">
+				<div class="nav-li-ico"></div>
+				<div class="nav-li-inner nav-txt-read">
+					<div class="nav-link-name">
+						<b>体检单位:</b>
+						<span>杭州第七人民医院</span>
+					</div>
+				</div>
+			</li>
+			<li class="nav-li-box nav-txt-read2">
+				<div class="nav-li-ico"></div>
+				<div class="nav-li-inner nav-txt-read">
+					<div class="nav-link-name">
+						<b>体检费用:</b>
+						<span>$ 68,000.00</span>
+					</div>
+				</div>
+			</li>
+			<li class="nav-li-box nav-txt-read2">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name nav-address">
+							<p class="line">详细地址:</p>
+							<p class="line">杭州市天目山路305号 精神科</p>
+						</div>
+					</div>
+				</li>
+		</ul>
+	</div>
+	
+</div>
+<div class="app-children-room"></div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cFwwDkXjo6TVz0cr28TNvA6F&callback=hospital"></script>
+<script>
+function hospital() {
+	// 百度地图API功能
+	var map = new BMap.Map("hospital-address", {minZoom:16, maxZoom:16});  // 创建Map实例
+	map.centerAndZoom("天际大厦",16);      // 初始化地图,用城市名设置地图中心点	
+	map.disableDragging();
+
+	var localSearch = new BMap.LocalSearch(map);
+}
+</script>

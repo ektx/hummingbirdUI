@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<title>关爱E</title>
+	<!-- 主框架样式 -->
+	<link rel="stylesheet" href="contents/css/layout.css">
+	<link rel="stylesheet" href="contents/css/main.css">
+	<script src="contents/js/jquery-2.1.4.min.js"></script>
+	<script src="contents/js/TweenMax.min.js"></script>
+</head>
+<body>
+	<!-- 主结构内容,内部添加你自己的代码 -->
+	<section class="hummer-app">
+		
+		<!-- 你的代码 -->
+		<section class="welcome-mod" data-move="true" data-rhelp="true">
+	<h1>Welcome</h1>
+	<div class="wel-man-mod">
+	
+		<div class="people-pic" style="background-image: url('contents/img/people/usr001/p01.png');"></div>
+		<div class="people-info">
+			<h3 class="slideworld">马 思纯</h3>
+			<i class="slidebg"></i>
+			<p class="slideworld">向右滑动解锁</p>
+		</div>
+	</div>
+</section>
+				<section class="app-mod">
+			<section class="app-inner">
+				<div id="home-page" class="app-room">
+					<div class="app-inner-room"></div>
+					<div class="app-children-room"></div>
+				</div>
+				<div id="search-page" class="app-room">
+					<div class="app-inner-room">
+						<div id="hummer-load-mod">
+							<div class="load-animate"></div>
+							<p>Loading...</p>
+						</div>
+					</div>
+					<div class="app-children-room"></div>
+				</div>
+				<div id="my-page" class="app-room app-room-show">
+					<div class="app-inner-room">
+						<div class="register-mod">
+	<div class="register-status-mod" data-mod="iCenter/usrcenter-mod" data-mod-t="个人中心">
+		<svg x="0px" y="0px" width="230px" height="230px" viewBox="0 0 230 230">
+			<defs>
+				<clipPath id="usrbox">
+					<circle cx="117.351" cy="111.769" r="90"/>
+				</clipPath>	
+			</defs>
+			<g class="circle-box"><circle class="circle-z" cx="117.351" cy="111.769" r="90"/></g>
+
+			<g id="svg-usrico">
+				<circle class="circle-z" cx="115" cy="100" r="35"/>
+				<circle class="circle-z" cx="115" cy="230" r="80" clip-path="url(#usrbox)"/>
+			</g>
+			<g id="svg-right">
+				<polyline points="55,127 90,160 170,85 "/>
+			</g>
+			<g id="svg-err">
+				<polyline points="65,60 170,170 "/>
+				<polyline points="65,170 170,60 "/>
+			</g>
+		</svg>
+	</div>
+
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox"><input name="idno" type="number"  maxlength="18" placeholder="身份证号" required="required">
+				<i></i></p>
+			</div>
+		</div>
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox"><input name="phone" type="number" placeholder="手机号" required="required">
+			<i></i></p>
+			</div>
+		</div>
+		<div class="int-box">
+			<p class="error"><span>请认真添加好么?</span></p>
+			<div class="int-inner">
+				<p class="intbox half">
+					<input type="text" name="vcode" placeholder="验证码" maxlength="6" required="required">
+					<i></i>
+				</p><button id="getSecruityCode">获取验证码</button>
+			</div>
+		</div>
+        <button id ="bt_ok" class="btn blue-btn">提交</button>
+	<script src="contents/js/checkform.js"></script>
+
+</div>
+						
+					</div>
+					<div id="i-usr-center" class="app-children-room"></div>
+
+				</div>
+
+			</section>
+
+			<nav class="app-menu">
+				<div class="app-menu-nav app-home" dataid="home-page" data-url="store">
+					<div class="nav-ico"><i></i></div>
+					<p class="nav-name">员工关爱</p>
+				</div>
+				<div class="app-menu-nav app-search" dataid="search-page">
+					<div class="nav-ico"><i></i></div>
+					<p class="nav-name">查询服务</p>
+				</div>
+				<div class="app-menu-nav app-i nav-active" dataid="my-page">
+					<div class="nav-ico"><i></i></div>
+					<p class="nav-name">我的关爱</p>
+				</div>
+			</nav>
+		</section>
+		
+	</section>
+	
+	<section class="slideTxtArea-mod">
+	<div class="slideTxtInner">
+		<div class="slideTxtTitle-box">
+			<h3></h3>
+			<p></p>
+		</div>
+		<div class="slideTxtInt-box">
+			<textarea name="" id=""></textarea>
+		</div>
+		<div class="slideTxtBtn-box">
+			<button onclick="hideSlideTxt()">取消</button><button>确认</button>
+		</div>
+	</div>
+</section>
+</body>
+<script src="contents/js/swiper.js"></script>
+<script src="contents/js/minweb.js" type="text/javascript"></script>
+<script src="contents/js/json2.js" type="text/javascript"></script>
+<script src="contents/js/jweixin-1.0.0.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        var appId, nonceStr, timestamp, signature, rawString;
+        var code = getQueryString("code");
+        var data = { code: "'" + code + "'" };
+        if (code != null) {
+            $.ajax({
+                type: "GET",
+                async: false, //同步
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                url: "service/LoveEService.asmx/Getsubscribe",
+                data: data,
+                error: function (error) { alert(error.responseText) },
+                success: function (result) {
+                    if (result.d != "") {
+                        $.ajax({
+                            type: "POST",
+                            async: false, //同步
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            url: "service/LoveEService.asmx/GetUserInfo",
+                            data: {},
+                            error: function (error) { alert(error.responseText) },
+                            success: function (result) {
+                                if (result.d != "") {
+                                    alert(result.d);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        $.ajax({
+            type: "GET",
+            async: false, //同步
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            url: "service/LoveEService.asmx/GetSignPackage",
+            data: { url: "'" + location.href.split('#')[0] + "'" },
+            error: function (error) { alert(error.responseText) },
+            success: function (result) {
+                if (result != null) {
+                    var data = eval('(' + result.d + ')');
+                    //                    signature = data.signature;
+                    //                    nonceStr = data.nonceStr;
+                    //                    timestamp = data.timestamp;
+                    //                    appId = data.appId;
+                    //                    rawString = data.rawString;
+                    wx.config({
+                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: data.appId, // 必填，公众号的唯一标识
+                        timestamp: data.nonceStr, // 必填，生成签名的时间戳
+                        nonceStr: data.timestamp, // 必填，生成签名的随机串
+                        signature: data.signature, // 必填，签名，见附录1
+                        jsApiList: ['showMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                    });
+                    wx.ready(function () {
+                    });
+                    wx.error(function (res) {
+
+                        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                        alert(data.signature);
+                    });
+                    wx.checkJsApi({
+                        jsApiList: ['showMenuItems'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+                        success: function (res) {
+                            // 以键值对的形式返回，可用的api值true，不可用为false
+                            // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+                            alert("jsapi success");
+                        }
+                    });
+                }
+            }
+        });
+
+        //        wx.config({
+        //            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        //            appId: appId, // 必填，公众号的唯一标识
+        //            timestamp: nonceStr, // 必填，生成签名的时间戳
+        //            nonceStr: timestamp, // 必填，生成签名的随机串
+        //            signature: signature, // 必填，签名，见附录1
+        //            jsApiList: ['showMenuItems'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        //        });
+        //        wx.ready(function () {
+        //        });
+        //        wx.error(function (res) {
+
+        //            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        //            alert(rawString + "  " + signature);
+        //        });
+        //        wx.checkJsApi({
+        //            jsApiList: ['showMenuItems'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+        //            success: function (res) {
+        //                // 以键值对的形式返回，可用的api值true，不可用为false
+        //                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+        //               alert("jsapi success");
+        //            }
+        //        });
+
+        $('#getSecruityCode').click(function () {
+            if ($("input[name='idno']").val() != "" && $("input[name='phone']").val() != "") {
+                var data = { phone: $("input[name='phone']").val().replace(/-/g, ''), idcard: $("input[name='idno']").val() };
+                $.ajax({
+                    type: "POST",
+                    async: false, //同步
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    url: "service/LoveEService.asmx/AuthEmployee",
+                    data: JSON.stringify(data),
+                    error: function (error) { alert(error.responseText) },
+                    success: function (result) {
+                        if (result.d != null) {
+                            var retJson = eval(result.d);
+                        }
+                    }
+                });
+            }
+        });
+        var Love_User = { Cardid: "", Name: "", CompanyName: "", Mobile: "", Address: "", CompanyId: "", EmployeeId: "" };
+        $('#bt_ok').click(function () {
+            if ($("input[name='idno']").val() != "" && $("input[name='phone']").val() != "" && $("input[name='vcode']").val() != "") {
+                var data = { phone: $("input[name='phone']").val().replace(/-/g, ''), idcard: $("input[name='idno']").val(), code: $("input[name='vcode']").val() };
+                $.ajax({
+                    type: "POST",
+                    async: false, //同步
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    url: "service/LoveEService.asmx/CheckInfo",
+                    data: JSON.stringify(data),
+                    error: function (error) { alert(error.responseText) },
+                    success: function (result) {
+                        if (result.d != null && result.d != "") {
+                            var retJson = eval("(" + result.d + ')');
+                            Love_User.Cardid = retJson[0].身份证号;
+                            Love_User.Name = retJson[0].姓名;
+                            Love_User.CompanyName = retJson[0].身份证号;
+                            Love_User.Mobile = $("input[name='phone']").val().replace(/-/g, '');
+                            Love_User.Address = retJson[0].家庭地址;
+                            Love_User.CompanyId = retJson[0].客户ID;
+                            Love_User.EmployeeId = retJson[0].雇员ID;
+                            $.ajax({
+                                type: "POST",
+                                async: false, //同步
+                                dataType: "json",
+                                contentType: "application/json;charset=utf-8",
+                                url: "service/LoveEService.asmx/binduser",
+                                data: JSON.stringify({ user: Love_User }),
+                                error: function (error) { alert(error.responseText) },
+                                success: function (result) {
+                                    if (result.d != null) {
+                                        alert(result.d);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+</script>
+
+</html>

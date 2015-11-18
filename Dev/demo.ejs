@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<%- include('parts/head') %>
+<body>
+	<!-- 主结构内容,内部添加你自己的代码 -->
+	<section class="hummer-app">
+		
+		<!-- 你的代码 -->
+		<%- include('parts/welcome') %>
+		<%- include('parts/main') %>
+		
+	</section>
+	
+	<!-- 下拉输入层 -->
+	<%- include('parts/slideTxtArea') %>
+	
+	<!-- deBug 模块,用于调试,需要开启请删除# -->
+	<%#- include('parts/debug') %>
+	
+	<!-- 加载状态 -->
+	<div class="hummer-load-mod"><div class="load-animate"></div><p>Loading...</p></div>
+
+	<%- include('parts/scripts') %>
+</body>
+</html>

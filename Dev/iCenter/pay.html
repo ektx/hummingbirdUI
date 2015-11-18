@@ -1,0 +1,169 @@
+<div class="app-inner-room" back-nav="hide">
+	<div class="shopcart-mod">
+		<div class="shopcart-box">
+			
+			<div class="nav-box-inner shopCart-contactu-box">
+				<p class="nav-help-info">联系方式:</p>
+				<ul class="nav-ul-box nav-clos-box">
+					<li class="nav-li-box" data-mod="iCenter/shopaddress-mod">
+						<div class="nav-li-ico"></div>
+						<div class="nav-li-inner">
+							<div class="nav-link-name shopCart-contactu">
+								<p><b>收购人:</b><span>马思纯</span></p>
+								<p><b>手机:</b><span>182-8888-9999</span></p>
+								<p><b>地址:</b><span>杭州市天目山路181号天际大厦16、17楼</span></p>
+							</div>
+							<div class="nav-more-ico">
+								<i></i>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="my-shops-mod">
+
+				<p class="nav-help-info">商品清单:</p>
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子</h3>
+							<p># 1,200</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check checked">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check checked">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+			</div>
+
+			<div class="nav-box-inner pay-for-order">
+				<p class="nav-help-info">支付方式:</p>
+				<ul class="nav-ul-box nav-clos-box">
+					<li class="nav-li-box pay-way-check">
+						<div class="pay-check-box">
+							<span class="my-shop-check checked" name="pay">
+								<i></i>
+							</span>
+						</div>
+						<div class="nav-li-inner">
+							<div class="nav-link-name"><b>积分1</b></div>
+							<div class="remind-point-mod">
+								可用积分<span class="my-points"># 9,000</span>
+							</div>
+						</div>
+					</li>
+					<li class="nav-li-box pay-way-check">
+						<div class="pay-check-box">
+							<span class="my-shop-check" name="pay">
+								<i></i>
+							</span>
+						</div>
+						<div class="nav-li-inner">
+							<div class="nav-link-name"><b>微信</b></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<nav class="shopcart-nav">
+			<div class="toMainNav">
+				<i></i>
+				<i></i>
+				<i></i>
+			</div><div class="pay-price-mod">
+				<b>合计: # 2000</b>
+			</div><button class="pay-btn" data-mod="iCenter/orderEnd-mod" data-mod-t="订单信息" disabled="disabled">确认提交</button>
+		</nav>
+	</div>
+</div>
+<div class="app-children-room"></div>
+
+<script>
+	$(function() {
+
+// 		$('.my-shop-box, .pay-way-check').click(function() {
+// console.log('pay:')
+// 			var _check = $(this).find('.my-shop-check');
+// 			var _name = _check.attr('name');
+
+// 			// 如果有和当前名称相同的checkbox则移除上面的选择
+// 			$('[name="'+_name+'"]').removeClass('checked')
+
+// 			_check.toggleClass('checked');
+// 			showPayBtn()
+
+// 		})
+
+
+		// $('.pay-btn').click(function(e) {
+
+		// 	var _this = $(this);
+
+
+		// 	if (!_this.attr('data-mod')) {
+		// 		var shopBox = $('.my-shop-box');
+		// 		var removeObj = shopBox.filter(function() {
+		// 			return !$(this).find('.my-shop-check').hasClass('checked')
+		// 		})
+
+
+		// 		var shopmod = $('.my-shops-mod');
+		// 		var _modH = shopmod.height();
+
+		// 		shopmod.height(_modH)
+		// 		// TweenMax.to(removeObj, .3, {x:'-100%', height: 0, marginTop: 0})
+		// 		removeObj.addClass('hide')
+
+		// 		// TweenMax.to('.shopCart-contactu-box', .4, {height: 120})
+
+		// 		// 显示支持方式
+		// 		$('.pay-for-order').addClass('show');
+
+		// 		$(this).attr('data-mod', 'iCenter/orderEnd-mod')
+
+		// 		e.stopPropagation()
+		// 	}
+
+
+		// })
+	})
+
+	function showPayBtn() {
+		if ($('.checked').size() >= 1) {
+			$('.pay-btn').removeAttr('disabled')
+		} else {
+			$('.pay-btn').attr('disabled', 'disabled')
+		}
+
+	}
+	showPayBtn()
+</script>

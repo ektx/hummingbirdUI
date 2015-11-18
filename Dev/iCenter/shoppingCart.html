@@ -1,0 +1,186 @@
+<div class="app-inner-room">
+	<div class="shopcart-mod">
+		<div class="shopcart-box">
+
+			<div class="my-shops-mod">
+
+				<p class="nav-help-info">商品清单:</p>
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子</h3>
+							<p># 1,200</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check checked">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*1</h3>
+							<p># 1,400</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+
+				<!-- 商品信息 -->
+				<div class="my-shop-box">
+					<figure>
+						<img src="contents/img/shop/min/cake.png" alt="cake">
+					</figure><div class="my-shop-info">
+						<div class="my-shop-baseIf">
+							<h3>芝士酿烤茄子*2</h3>
+							<p># 5,200</p>
+
+							<!-- 数量选择 -->
+							<div class="num-set-mod">
+								<button>-</button><input type="number" value="1"><button>+</button>
+							</div><!--// 数量选择 -->
+						</div><span class="my-shop-check">
+							<i></i>
+						</span>
+					</div>
+				</div><!--// 商品信息 -->
+
+			</div>
+
+		</div>
+		<nav class="shopcart-nav">
+			<div class="toMainNav">
+				<i></i>
+				<i></i>
+				<i></i>
+			</div><div class="pay-price-mod">
+				<b>合计: # 2000</b>
+			</div><button class="pay-btn" data-mod="iCenter/pay-mod" data-nav="hide" disabled="disabled">确认提交</button>
+		</nav>
+	</div>
+</div>
+<div class="app-children-room"></div>
+
+<script>
+	$(function() {
+
+		$('#my-page').off('click', '.my-shop-box, .pay-way-check').on('click', '.my-shop-box, .pay-way-check', function() {
+
+			var _check = $(this).find('.my-shop-check');
+			var _name = _check.attr('name');
+
+			// 如果有和当前名称相同的checkbox则移除上面的选择
+			$('[name="'+_name+'"]').removeClass('checked')
+
+			_check.toggleClass('checked');
+			showPayBtn()
+
+		})
+
+	})
+
+	function showPayBtn() {
+		if ($('.checked').size() >= 1) {
+			$('.pay-btn').removeAttr('disabled')
+		} else {
+			$('.pay-btn').attr('disabled', 'disabled')
+		}
+
+	}
+	showPayBtn()
+</script>

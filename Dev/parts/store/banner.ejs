@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="contents/css/swiper.min.css">
+<div class="swiper-container home-banner">
+	<div class="swiper-wrapper">
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+		<div class="swiper-slide" style="background-image:url('contents/img/people/usr001/p01.png')">Slide 1</div>
+	</div>
+    <div class="swiper-pagination"></div>
+
+</div>
+<!-- <script src="contents/js/swiper.js"></script> -->
+<script>
+$(function() {
+	$.getScript('contents/js/swiper.min.js', function() {
+
+		var swiper = new Swiper('.home-banner', {
+			pagination: '.swiper-pagination',
+			paginationClickable: true
+		})
+		var swiper2 = new Swiper('.store-pro-mod', {
+			freeMode: true,
+			slidesPerView: 'auto'
+		})
+	})
+})
+</script>

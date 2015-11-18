@@ -1,0 +1,143 @@
+<!-- 个人中心菜单 -->
+<div id="nav-second-mod" class="app-inner-room">
+	<section class="nav-box-mod i-perSpace-mod">
+		<div class="nav-box-inner">
+			<ul class="nav-ul-box usr-info-mod">
+				<li class="nav-li-box setUsrIco">
+					<div class="nav-li-ico usr-logo-box">
+						<div class="usr-pic-mod">
+							<img src="contents/img/people/usr001/usr01.png" alt="">
+							<div class="take-pic-mod">
+								<i></i>
+							</div>
+						</div>
+					</div>
+					<div class="nav-li-inner usr-base-info">
+						<div>
+							<h3></h3>
+							<p></p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="nav-box-inner">
+			<ul class="nav-ul-box nav-clos-box i-perSpace-inner">
+				<li class="nav-li-box" data-type="slideConfirm" data-txt="[[title]]" data-inner="[[inner]]" data-fun="changeUseInfo()">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>姓名:</b>
+							<div>
+								<input name="Name" type="text" readonly="readonly" placeholder="姓 名" value="">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box" data-type="slideConfirm" data-txt="[[title]]" data-inner="[[inner]]" data-fun="changeUseInfo()">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>公司:</b>
+							<div>
+								<input name="CompanyName" type="text" readonly="readonly" placeholder="公司名称" value="">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box" data-type="slideConfirm" data-txt="[[title]]" data-inner="[[inner]]" data-fun="changeUseInfo()">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>工作岗位:</b>
+							<div>
+								<input name="Job" type="text" readonly="readonly" placeholder="工作岗位" value="">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>身份证:</b>
+							<div>
+								<input type="text" readonly="readonly" name="Cardid" value="">
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box" data-mod="iCenter/changeMobile-mod" data-mod-t="修改手机号">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>电话:</b>
+							<div>
+								<input type="text" name="Mobile" readonly="readonly" value="">
+								<div class="nav-more-ico" style="display:none">
+									<div class="btn-ico add-ico"><i></i></div>
+								</div>
+							</div>
+						</div>
+						<div class="nav-more-ico">
+							<i></i>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box" data-mod="iCenter/frontCover-mod" data-fun="setFrontCover()" data-nfn="2">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>封面:</b>
+							
+						</div>
+						<div class="nav-more-ico">
+							<i></i>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box nav-qrcode-li-box" data-mod="iCenter/myQRcode-mod" style="display:none">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name">
+							<b>二维码:</b>
+							<div>
+							<div class="nav-more-ico">
+								<div class="btn-ico qrcode-ico"><i></i></div>
+							</div></div>
+						</div>
+					</div>
+				</li>
+				<li class="nav-li-box" data-type="slideConfirm" data-txt="[[title]]" data-inner="[[inner]]" data-fun="changeUseInfo()">
+					<div class="nav-li-ico"></div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name nav-address">
+							<p class="line">联系地址:</p>
+							<p class="line" data-name="Address"></p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="nav-box-inner">
+			<ul class="nav-ul-box nav-clos-box">
+				<li id="dropMyInfo" class="nav-li-box esc-company-group">
+					<div class="nav-li-inner">
+						<div class="nav-link-name">解除绑定</div>
+					</div>
+				</li>
+			</ul>
+			<p class="nav-help-info">解除当前微信和我之前的绑定</p>
+		</div>
+	</section>
+								
+</div>
+<div class="app-children-room"></div>
+<script>
+$(function() {
+	$.getScript('contents/js/setCam.js')
+})
+
+</script>
