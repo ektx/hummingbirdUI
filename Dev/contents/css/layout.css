@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* 
-	HUMBERBIRD
+	HUMMINGBIRDUI
 	------------------------------
 	CSS                 layout.css
  */
@@ -240,6 +240,7 @@ input::-webkit-inner-spin-button {
 }
 .nav-li-box > div:last-child,
 .nav-li-inner > div:not(.nav-more-ico) {
+	/* 自动伸缩大小 */
 	-webkit-box-flex: 1;
 	-moz-box-flex: 1;
 	box-flex: 1;
@@ -269,6 +270,7 @@ input::-webkit-inner-spin-button {
 
 .nav-li-ico {
 	overflow: hidden;
+	min-width: 10px;
 }
 .nav-link-ico-box {
 	height: 28px;

@@ -1,5 +1,5 @@
 /*!
- * VERSION: 0.2.0
+ * VERSION: 0.2.1
  * DATE: 2015-11-18
  * 
  * @author: zwl, ektx1989@icloud.com
@@ -641,7 +641,7 @@ nav.addEventListener('click', function(e) {
 
 	// 请求页面
 	if (_url) {
-		_url += '.html';
+		// _url += '.html';
 		var _inner = $('#'+_id);
 
 		_inner.hide()
