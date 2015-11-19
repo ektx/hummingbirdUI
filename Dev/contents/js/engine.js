@@ -642,6 +642,7 @@ nav.addEventListener('click', function(e) {
 	// 请求页面
 	if (_url) {
 		var _inner = $('#'+_id);
+		_url += '.html'
 
 		_inner.hide()
 		
