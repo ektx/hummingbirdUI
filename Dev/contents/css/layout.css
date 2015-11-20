@@ -16,6 +16,13 @@ ul, li, ol, input, button {
 	-webkit-touch-callout: none;
 }
 
+li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+
 body {
 	font: 14px tahoma,"Helvetica Neue","微软雅黑","microsoft yahei",helvetica,sans-serif,arial;
 	background-color: #333;
@@ -110,6 +117,7 @@ input::-webkit-inner-spin-button {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
+
 .app-room-overlay {
 	content: '';
 	display: block;
@@ -142,6 +150,12 @@ input::-webkit-inner-spin-button {
 	left: 0;
 	z-index: 1000;
 }
+/* 存在菜单时，高度如下 */
+.has-nav-room {
+	height: -webkit-calc(100% - 56px);
+	height: calc(100% - 56px);
+}
+
 
 /* 菜单 */
 .app-menu {
@@ -546,8 +560,117 @@ input::-webkit-inner-spin-button {
 
 
 
+/* 查寻 */
+.hui-search-mod {
+	width: 100%;
+	height: 60px;
+	background-color: #fff;
+	font-size: 0;
+}
+.hui-search-mod input[type="search"],
+.hui-search-mod input[type="reset"] {
+	border: none;
+	outline: none;
+	height: 100%;
+	font-size: 14px;
+}
+
+.hui-search-mod input[type="search"] {
+	width: 100%;
+	width: -webkit-calc(100% - 45px);
+	width: calc(100% - 45px);
+	padding: 0 5px;
+}
+.hui-search-mod input[type="search"]::-webkit-search-cancel-button {
+	display: none;
+}
+
+.hui-search-mod input[type="reset"] {
+	-webkit-appearance: none;
+	width: 45px;
+	background-color: #fff;
+	color: #999;
+}
 
 
+/* 下拉小图标 ▲ */
+.drop-down-mod {
+	display: inline-block;
+	width: 10px;
+	height: 100%;
+	margin: 0 5px;
+	position: relative;
+	z-index: 1;
+}
+.drop-down-mod i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: 0 -4px;
+	border: 4px solid transparent;
+	border-top-color: #333;
+}
+
+/* 分组用户列表效果 */
+.hui-group-list-mod {
+	margin: 10px 0;
+}
+.hui-group-box {
+	background-color: #FFF;
+	margin-bottom: 10px;
+}
+
+.hui-group-box h1 {
+	font-size: 16px;
+	height: 32px;
+	line-height: 32px;
+}
+.hui-group-box h1 span {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.hui-gp-inner li:hover {
+	background-color: #f5f5f5;
+}
+.hui-gp-inner li:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.hui-gp-inner figure img {
+	width: 50px;
+	height: 50px;
+	float: left;
+	margin: 5px 10px;
+}
+
+.hui-gp-usr-info {
+	float: left;
+	height: 60px;
+	width: -webkit-calc(100% - 70px);
+	width: calc(100% - 70px);
+	overflow: hidden;
+}
+.hui-gp-inner li:not(:last-child) .hui-gp-usr-info {
+	border-bottom: 1px solid #eee;
+}
+.hui-gp-inner li:hover .hui-gp-usr-info {
+	border-bottom-color: transparent;
+}
+.hui-gp-usr-info h2,
+.hui-gp-usr-info p {
+	text-indent: 5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	color: #999;
+}
+.hui-gp-usr-info h2 {
+	font-size: 1.3em;
+	line-height: 2;
+	color: #333;
+}
 
 
 
