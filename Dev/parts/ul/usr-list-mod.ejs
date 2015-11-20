@@ -7,28 +7,40 @@
 
 %>
 
-<% for(var g = 0; g < 3; g++) { %>
+<% for(var g = 1; g < 4; g++) { %>
 	<div class="hui-group-box">
 		<!-- 分组名 -->
-		<h1><b class="drop-down-mod"><i></i></b><span>分组名称 <%= g %></span></h1>
+		<h1><b class="drop-down-mod"><i></i></b><span>团队 <%= g %></span></h1>
 		<ul class="hui-gp-inner">
 		<!-- 添加5个信息 -->
-		<% for(var i = 0; i < 5; i++) { %>
-			<li>
-				<a href="#">
-					<!-- 图片 -->
-					<figure>
-						<img src="contents/img/people/usr001/usr01.png" alt="默认头像" />
-					</figure>
-					<!-- 个人信息 -->
-					<div class="hui-gp-usr-info">
-						<h2>姓名<%= i %></h2>
-						<p>其它说明</p>
-					</div>
-				</a>
+		<% for(var i = 1; i < 8; i++) { %>
+			<%#
+			data-mod-t: 新页面时，title标题内容
+			data-mod: 新页面请求内容
+			更多查看 doc/api
+			%>
+			<li data-mod-t="[[inner]]" data-mod="iCenter/stats-mod">
+				<!-- 图片 -->
+				<figure>
+					<img src="contents/img/people/usr001/usr01.png" alt="默认头像" />
+				</figure>
+				<!-- 个人信息 -->
+				<div class="hui-gp-usr-info">
+					<h2><%= g %>姓名<%= i %></h2>
+					<p>其它说明</p>
+				</div>
 			</li>
 			<% } %>
 		</ul>
 	</div>
 
 <% } %>
+
+
+<script>
+// 引用js
+$(function() {
+	$.getScript('contents/js/module/usr-list-mod.js')
+})
+
+</script>

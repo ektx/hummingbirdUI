@@ -1,0 +1,59 @@
+<%# 
+	用户列表模板2
+	===========================================
+	没有头像，只有上下2个信息
+	标题和说明
+
+	@author: zwl
+	@time: 2015-11-20
+
+%>
+
+	<div class="hui-group-box">
+		<!-- 分组名 -->
+		<h1><b class="drop-down-mod"><i></i></b><span>在服务客户</span></h1>
+		<ul class="hui-gp-inner">
+		<!-- 添加5个信息 -->
+		<% for(var i = 0; i < 5; i++) { %>
+			<li>
+				<!-- 个人信息 -->
+				<div class="hui-gp-usr-info">
+					<h2>姓名<%= i %></h2>
+					<p>
+						<span>服务类型</span>	
+						<span>990人</span>	
+					</p>
+				</div>
+			</li>
+			<% } %>
+		</ul>
+	</div>
+
+
+	<div class="hui-group-box">
+		<!-- 分组名 -->
+		<h1><b class="drop-down-mod"><i></i></b><span>无服务客户</span></h1>
+		<ul class="hui-gp-inner">
+		<!-- 添加5个信息 -->
+		<% for(var i = 0; i < 5; i++) { %>
+			<li>
+				<!-- 个人信息 -->
+				<div class="hui-gp-usr-info">
+					<h2>姓名<%= i %></h2>
+					<p>
+						<span>服务类型</span>	
+						<span>990人</span>	
+					</p>
+				</div>
+			</li>
+			<% } %>
+		</ul>
+	</div>
+
+<script>
+// 引用js
+$(function() {
+	$.getScript('contents/js/module/usr-list-mod.js')
+})
+
+</script>
