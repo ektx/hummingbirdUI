@@ -1,0 +1,41 @@
+<%# 
+	用户列表模板
+	===========================================
+	用户名
+	用户头像
+	其它信息
+	
+	@group 分组名:
+	include('ul-list-mod', {group: g})
+
+	author: zwl
+	time: 2015-11-23
+
+%>
+
+		<ul class="hui-gp-inner">
+		<!-- 添加5个信息 -->
+		<% for(var i = 1; i < 8; i++) { %>
+			<%#
+			data-mod-t: 新页面时，title标题内容
+			data-mod: 新页面请求内容
+			更多查看 doc/api
+			%>
+			<li data-mod-t="[[inner]]" data-mod="iCenter/stats-mod">
+				<!-- 图片 -->
+				<figure>
+					<img src="contents/img/people/usr001/usr01.png" alt="默认头像" />
+				</figure>
+				<!-- 个人信息 -->
+				<div class="hui-gp-usr-info">
+				<!-- 如果有分组号 -->
+				<% if (typeof group != 'undefined') { %>
+					<h2><%= group %>姓名<%= i %></h2>
+				<% } else { %>
+					<h2>姓名<%= i %></h2>
+				<% } %>
+					<p>其它说明</p>
+				</div>
+			</li>
+			<% } %>
+		</ul>

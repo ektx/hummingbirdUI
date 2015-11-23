@@ -10,6 +10,28 @@ var goTimeout;
 
 document.addEventListener('DOMContentLoaded', function() {
 
+	// 自动生成主页面
+	var app_html = '';
+
+	$('.app-menu .app-menu-nav').each(function() {
+		// debugger
+		var _this = $(this);
+		var id = _this.attr('dataid');
+		var url = _this.attr('data-url');
+		var act = _this.hasClass('nav-active');
+
+		app_html += '<div id="'+id+'" class="app-room' + (act?' app-room-show':'') + '">'+id+'</div>';
+
+	});
+
+	// 生成框架主体
+	$('.app-inner').html(app_html);
+
+	// 让默认的页面显示
+	$('.nav-active').click();
+
+
+
 	// 加载页面模板
 	var loadHTMLMod = '';
 
@@ -17,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// 当浏览器点击返回按钮功能
 	// 返回上一层菜单
 	window.onpopstate = function(event) {
+
 		console.log('!!! popstate')
 		// alert('location:'+ document.location+', state:'+JSON.stringify(event.state))
 		var obj = $('.app-room-overlay:last').parent().siblings();
@@ -44,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// 如果不是菜单或是工资条,且有指定调用内容的情况下结束打开菜单
 		if (!getHtml && (_this.hasClass('nav-li-box') || _this.hasClass('wages-months-list'))) return;
-
 		// 设置遮盖层
 		innerBody.append('<div class="app-room-overlay"></div>')
 		var overlay = innerBody.find('.app-room-overlay');
@@ -267,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// } else {
 	// 	alert('not support vibrate')
 	// }
+
 
 
 }, false)
@@ -635,6 +658,8 @@ nav.addEventListener('click', function(e) {
 	var thisE = document.querySelector('#'+_id);
 
 	// 切换动画
+	oldRoom.classList.toggle('app-room-show')
+
 	thisE.className += ' app-room-fadeIn app-room-show';
 	// loading...
 	$('.hummer-load-mod').fadeIn();
@@ -646,17 +671,20 @@ nav.addEventListener('click', function(e) {
 
 		_inner.hide()
 		
-		_inner.load(_url, function() {
+		_inner.load(_url, function(res, status, xhr) {
 			_inner.fadeIn()
 			// loading...
-			$('.hummer-load-mod').remove()
+			$('.hummer-load-mod').hide()
+			// 移除路径减少请求
 			$('.nav-active').removeAttr('data-url')
 		})
+	} else {
+		// hide load...
+		$('.hummer-load-mod').hide()
 	}
 	
 	// 移除切换动画状态
 	setTimeout(function() {
-		oldRoom.classList.toggle('app-room-show')
 		thisE.classList.remove('app-room-fadeIn')
 	}, 410)
 });

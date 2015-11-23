@@ -1,0 +1,27 @@
+<%# 
+	用户列表模板
+	===========================================
+	类型qq聊天的用户清单，带分组功能
+	@author: zwl
+	@time: 2015-11-20
+
+%>
+
+<% for(var g = 1; g < 4; g++) { %>
+	<div class="hui-group-box">
+		<!-- 分组名 -->
+		<h1><b class="drop-down-mod"><i></i></b><span>团队 <%= g %></span></h1>
+		
+		<%- include('ul-list-mod', {group: g}) %>
+	</div>
+
+<% } %>
+
+
+<script>
+// 引用js
+$(function() {
+	$.getScript('contents/js/module/usr-list-mod.js')
+})
+
+</script>

@@ -130,27 +130,38 @@
 
 /* nav */
 .app-menu-nav i {
-	background-image: url('../img/nav/careE_ico.png');
+	background-image: url('../img/nav/ceonav.png');
 }
 
-.app-home i {
+.nav-stats i {
 	background-position: 0 -75px;
 }
-.app-home i:hover,
-.app-home.nav-active i {
-	background-position: 0 1px;
+.nav-stats.nav-active i {
+	background-position: 0 0;
 }
-.app-search i {
-	background-position: -75px -75px;
+.nav-money i {
+	background-position: -81px -75px;
 }
-.app-search.nav-active i {
-	background-position: -75px -1px;
+.nav-money.nav-active i {
+	background-position: -81px -1px;
 }
-.app-i i {
+.nav-client i {
 	background-position: -156px -75px;
 }
-.app-i.nav-active i {
+.nav-client.nav-active i {
 	background-position: -156px -1px;
+}
+.nav-search i {
+	background-position: -305px -77px;
+}
+.nav-search.nav-active i {
+	background-position: -305px -3px;
+}
+.nav-page i {
+	background-position: -383px -79px;
+}
+.nav-page.nav-active i {
+	background-position: -383px -4px;
 }
 
 /* 注册认证模块 */
@@ -1060,3 +1071,18 @@
 	background-size: cover;
 	-webkit-user-select: none;
 }
+
+
+
+
+
+
+.search-inner-mod {
+	background-color: #fff;
+}
+
+
+
+
+
+
