@@ -1,0 +1,25 @@
+<%#
+	页面主架构
+	----------------------------------------	
+	移动控制参数  
+	- mod-ctrl : 数字,指定返回父级层数,默认为1,-1表示禁止移动  
+	- back-nav : [hide] 指定返回当前层之后，主菜单是否要显示，注：不要对顶层元素使用
+
+	class说明：
+	has-nav-room: 有主菜单时，请不要删除它，它让可视大小不包含菜单，防止了内容在菜单下面看不见    
+
+	详细参考：
+	API.md
+
+	-----------------------------------------
+	author: zwl
+	time: 2015-11-24
+%>
+
+<div class="app-inner-room has-nav-room" 
+	 mod-ctrl="-1"
+	 back-nav="hide"
+>
+
+</div>
+<div class="app-children-room"></div>

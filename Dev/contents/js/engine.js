@@ -1,5 +1,5 @@
 /*!
- * VERSION: 0.2.1
+ * VERSION: 0.2.2
  * DATE: 2015-11-18
  * 
  * @author: zwl, ektx1989@icloud.com
@@ -10,27 +10,8 @@ var goTimeout;
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	// 自动生成主页面
-	var app_html = '';
-
-	$('.app-menu .app-menu-nav').each(function() {
-		// debugger
-		var _this = $(this);
-		var id = _this.attr('dataid');
-		var url = _this.attr('data-url');
-		var act = _this.hasClass('nav-active');
-
-		app_html += '<div id="'+id+'" class="app-room' + (act?' app-room-show':'') + '">'+id+'</div>';
-
-	});
-
-	// 生成框架主体
-	$('.app-inner').html(app_html);
-
-	// 让默认的页面显示
-	$('.nav-active').click();
-
-
+	// 自动化处理
+	init();
 
 	// 加载页面模板
 	var loadHTMLMod = '';
@@ -223,25 +204,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 	// TouchMove()
-	moveDiv = {};
+	HUI = {};
 	// 移动层收集器
 	// 因框架是级级相套的结构,因此在移动内层子级时,父级难免一起受到了事件的监听
 	// 收集器可以把收集到的数据统一集中
-	moveDiv.Ctrl = [];
+	HUI.Ctrl = [];
+
+	// 用于页面间数据传递功能
+	HUI.postMessage = null;
 
 	var moveOptions = '.app-children-room, [data-move]';
 
 	appbody.on('touchstart mousedown', moveOptions, function() {
 
-		moveDiv.oldTransform = parseFloat($(this).css('transform').split(',')[4]);
-		if (!moveDiv.oldTransform && typeof moveDiv.oldTransform == 'number') {
-			moveDiv.oldTransform = 0;
+		HUI.oldTransform = parseFloat($(this).css('transform').split(',')[4]);
+		if (!HUI.oldTransform && typeof HUI.oldTransform == 'number') {
+			HUI.oldTransform = 0;
 		}
-		moveDiv.winW  = document.documentElement.clientWidth;
-		moveDiv.direX = 1;
-		moveDiv.direY = 1;
+		HUI.winW  = document.documentElement.clientWidth;
+		HUI.direX = 1;
+		HUI.direY = 1;
 
-		moveDiv.Ctrl.push(parseInt($(this).find('.app-inner-room').attr('mod-ctrl')) || 1);
+		HUI.Ctrl.push(parseInt($(this).find('.app-inner-room').attr('mod-ctrl')) || 1);
 
 		handleStart($(this))
 
@@ -335,18 +319,18 @@ function setPopstate(pages) {
 
 function handleStart(_this) {
 
-	moveDiv.start = {}
+	HUI.start = {}
 	if (event.type === 'touchstart') {
-		moveDiv.start.pageX = event.touches[0].pageX;
-		moveDiv.start.pageY = event.touches[0].pageY
+		HUI.start.pageX = event.touches[0].pageX;
+		HUI.start.pageY = event.touches[0].pageY
 	} else {
-		moveDiv.start.pageX = event.pageX;
-		moveDiv.start.pageY = event.pageY
+		HUI.start.pageX = event.pageX;
+		HUI.start.pageY = event.pageY
 	}
 
-	moveDiv.deltaX = 0;
-	moveDiv.Stime = +new Date();
-	
+	HUI.deltaX = 0;
+	HUI.Stime = +new Date();
+
 	if (!!_this.attr('data-rhelp')) {
 		var winW = document.documentElement.clientWidth;
 		_this.css({
@@ -360,7 +344,7 @@ function handleStart(_this) {
 		
 
 	if (!!document.querySelector('#tStart'))
-		document.querySelector('#tStart').innerHTML = 'Start:'+JSON.stringify(moveDiv.start);
+		document.querySelector('#tStart').innerHTML = 'Start:'+JSON.stringify(HUI.start);
 }
 
 /*
@@ -381,7 +365,7 @@ function handleMove(_this) {
 
 	// 1.只对当前层
 	// 2.且内部同级的遮盖层只能有1个的层进行或是与自定的 mod-ctrl 数相同的层
-	if (_this.hasClass('app-children-room') && _this.parent().find('.app-room-overlay').size() != moveDiv.Ctrl[0]) {
+	if (_this.hasClass('app-children-room') && _this.parent().find('.app-room-overlay').size() != HUI.Ctrl[0]) {
 
 		return
 	}
@@ -391,16 +375,16 @@ function handleMove(_this) {
 	var deltaY = 0;
 
 	if (event.type === 'touchmove') {
-		deltaX = evt.touches[0].pageX - moveDiv.start.pageX;
-		deltaY = evt.touches[0].pageY - moveDiv.start.pageY;
+		deltaX = evt.touches[0].pageX - HUI.start.pageX;
+		deltaY = evt.touches[0].pageY - HUI.start.pageY;
 	} else {
 		if (event.buttons !== 0) {
-			deltaX = event.pageX - moveDiv.start.pageX;
-			deltaY = event.pageY - moveDiv.start.pageY;
+			deltaX = event.pageX - HUI.start.pageX;
+			deltaY = event.pageY - HUI.start.pageY;
 		}
 	}
 
-	moveDiv.deltaX = deltaX;
+	HUI.deltaX = deltaX;
 
 	// 阻止浏览器默认形为,好处是浏览器不会出现抖动了,平稳的像原生APP
 	// 坏处是,滚动条都不给动了,呵呵
@@ -412,7 +396,7 @@ function handleMove(_this) {
 		document.querySelector('#tmove').innerHTML = 'Move - X:'+deltaX +', Y:' + deltaY;
 
 	// 设置遮盖层的明暗
-	var shine = (1- deltaX/moveDiv.winW) * 0.8;
+	var shine = (1- deltaX/HUI.winW) * 0.8;
 
 	_this.css({
 		
@@ -431,34 +415,34 @@ function handleMove(_this) {
 	var _moveX = 0;
 	var _moveY = 0;
 
-	switch (moveDiv.direX) {
+	switch (HUI.direX) {
 		case 1:
 			// -20是移动的位置,引导时,右移了20px
 			antiJitter = !!_this.attr('data-rhelp')?-20:antiJitter;
 			console.log('>> 只能右移 >>'+antiJitter)
-			var __x = moveDiv.oldTransform + deltaX - antiJitter;
+			var __x = HUI.oldTransform + deltaX - antiJitter;
 
-			if (__x > - moveDiv.winW) {
+			if (__x > - HUI.winW) {
 				_moveX = __x;
 			} else {
-				_moveX = - moveDiv.winW;
+				_moveX = - HUI.winW;
 			}
 			break;
 		case 2:
 			// console.log('<< 只能左移 <<')
-			var __x = moveDiv.oldTransform + deltaX;
-			if (__x < - moveDiv.winW)  {
+			var __x = HUI.oldTransform + deltaX;
+			if (__x < - HUI.winW)  {
 				_moveX = __x;
 			} else {
-				_moveX = - moveDiv.winW;
+				_moveX = - HUI.winW;
 			}
 			break;
 		case 4:
 			// console.log('<>')
-			_moveX = moveDiv.oldTransform + deltaX;
+			_moveX = HUI.oldTransform + deltaX;
 			break;
 		default:
-			_moveX = moveDiv.oldTransform;
+			_moveX = HUI.oldTransform;
 	}
 
 	_this.css({
@@ -469,20 +453,19 @@ function handleMove(_this) {
 	})
 
 	// 移动结束时，位置标记
-	moveDiv.endX = _moveX;
+	HUI.endX = _moveX;
 
 }
 
 
 function handleEnd(_this, evt) {
 
-	console.log('touchend: '+moveDiv.endX)
-	console.log(_this)
-	if (moveDiv.deltaX === 0) return;
+	console.log('touchend: '+HUI.endX)
+	// console.log(_this)
+	if (HUI.deltaX === 0) return;
 
 	var antiJitter = 30;
-	moveDiv.Etime = +new Date();
-
+	HUI.Etime = +new Date();
 
 	// 判断返回菜单是否显示
 	var backNav = _this.find('.app-inner-room').attr('back-nav');
@@ -513,9 +496,9 @@ function handleEnd(_this, evt) {
 	// 移动 > 2/3 的全屏幕时,就会隐藏这个子层了
 	var mainL = function() {
 
-		var useTime = moveDiv.Etime - moveDiv.Stime;
-		var moveSpeed = moveDiv.deltaX / useTime;
-		console.log(moveDiv.deltaX+'px')
+		var useTime = HUI.Etime - HUI.Stime;
+		var moveSpeed = HUI.deltaX / useTime;
+		console.log(HUI.deltaX+'px')
 		console.log(useTime+'ms')
 		console.log(moveSpeed+'px/ms')
 
@@ -526,7 +509,7 @@ function handleEnd(_this, evt) {
 			return;
 		}
 
-		if (moveDiv.endX < - (moveDiv.winW/3 + antiJitter)) {
+		if (HUI.endX < - (HUI.winW/3 + antiJitter)) {
 			showM()
 		} else {
 			hideM(_this, backNav)
@@ -534,7 +517,7 @@ function handleEnd(_this, evt) {
 	}
 
 	var mainR = function() {
-		if (moveDiv.endX > -(moveDiv.winW/3 + moveDiv.winW + antiJitter)) {
+		if (HUI.endX > -(HUI.winW/3 + HUI.winW + antiJitter)) {
 			showM()
 		} else {
 			hideM(_this, backNav)
@@ -550,7 +533,7 @@ function handleEnd(_this, evt) {
 	// 防止手机跳动无动画
 	setTimeout(function() {
 
-		switch (moveDiv.direX) {
+		switch (HUI.direX) {
 			case 1:
 				mainL();
 				break;
@@ -560,7 +543,7 @@ function handleEnd(_this, evt) {
 	}, 0)
 
 
-	moveDiv.Ctrl = []
+	HUI.Ctrl = []
 	// document.querySelector('#tEnd').innerHTML = 'End:' + _endX;
 }
 
@@ -747,4 +730,49 @@ function genLoadHTML() {
 	var html = '<div class="hummer-load-mod"><div class="load-animate"></div><p>Loading...</p></div>';
 
 	return html;
+}
+
+
+/*
+	生成主页
+	------------------------------------------
+	自动按主菜单为框架页面生成主页面
+*/
+function generationHomePage() {
+	// 自动生成主页面
+	var app_html = '',
+		load_id = '',
+		load_url = '';
+
+	$('.app-menu .app-menu-nav').each(function() {
+		// debugger
+		var _this = $(this);
+		var id = _this.attr('dataid');
+		var url = _this.attr('data-url');
+		var act = _this.hasClass('nav-active');
+
+		app_html += '<div id="'+id+'" class="app-room' + (act?' app-room-show':'') + '">'+id+'</div>';
+
+		if (act) {
+			load_id = id;
+			load_url = url;
+		}
+
+	});
+
+	// 生成框架主体
+	$('.app-inner').html(app_html);
+
+	// 让默认的页面显示
+	if ($('.nav-active').size() > 0) {
+		load_url += '.html';
+		$('#'+load_id).load(load_url)
+	}
+
+}
+
+
+
+function init() {
+	generationHomePage();
 }

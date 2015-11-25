@@ -379,7 +379,7 @@
 	margin: -11px -16px;
 	-webkit-transform: scale(.5);
 	transform: scale(.5);
-	background: url(../img/nav/navIco.png) no-repeat -134px -357px;
+	background: url(../img/nav/setnav.png) no-repeat -134px -357px;
 }
 
 .usr-base-info h3 {
@@ -389,25 +389,6 @@
 	padding-top: 12px;
 }
 
-/* 用户清单列表图标 */
-.i-search-box .nav-link-ico {
-	background-position: -30px -15px;
-}
-.i-health-nav .nav-link-ico {
-	background-position: -30px -107px;
-}
-.i-welfare-nav .nav-link-ico {
-	background-position: -30px -188px;
-}
-.i-points-nav .nav-link-ico {
-	background-position: -30px -273px;
-}
-.i-shopCart-nav .nav-link-ico {
-	background-position: -120px -16px;
-}
-.i-order-nav .nav-link-ico {
-	background-position: -120px -107px;
-}
 
 .usr-center-mod {
 	background-color: #eee;

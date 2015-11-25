@@ -292,6 +292,7 @@ input::-webkit-inner-spin-button {
 	margin: 10px;
 }
 .nav-link-ico {
+	display: block;
 	width: 56px;
 	height: 56px;
 	-webkit-transform: scale(.5);
@@ -299,6 +300,29 @@ input::-webkit-inner-spin-button {
 	-webkit-transform-origin: top left;
 	transform-origin: top left;
 	background: url(../img/nav/navico.png) no-repeat -30px -15px;
+}
+
+/* 用户清单列表图标 */
+.i-search-box .nav-link-ico {
+	background-position: -30px -15px;
+}
+.i-health-nav .nav-link-ico {
+	background-position: -30px -107px;
+}
+.i-welfare-nav .nav-link-ico {
+	background-position: -30px -188px;
+}
+.i-points-nav .nav-link-ico {
+	background-position: -30px -273px;
+}
+.i-shopCart-nav .nav-link-ico {
+	background-position: -120px -16px;
+}
+.i-order-nav .nav-link-ico {
+	background-position: -120px -107px;
+}
+.i-error-nav .nav-link-ico {
+	background-position: -119px -189px;
 }
 
 .nav-link-name {

@@ -1,0 +1,61 @@
+<div class="app-inner-room has-nav-room">
+	
+	<section class="app-inner-box">
+
+		<!-- 设置菜单功能 -->
+		<div class="nav-box-inner">
+			<ul class="nav-ul-box nav-clos-box">
+				<li id="ico-dispaly-mod" class="nav-li-box i-search-nav">
+					<div class="nav-li-ico">
+						<div class="nav-link-ico-box">
+							<div class="nav-link-ico"></div>
+						</div>
+					</div>
+					<div class="nav-li-inner">
+						<div class="nav-link-name"><b>图标示例效果</b></div>
+						<div class="nav-more-ico">
+							<i></i>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<pre class="language-markup">&lt;!-- 这里是代码提示 --></pre>
+
+
+		<div class="icon-list-mod">
+			<p>选择你要的图标，从上面预览效果</p>
+			<div class="icon-list-main">
+				<ul class="icon-list-icons">
+					<li class="i-search-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-health-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-welfare-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-points-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-shopCart-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-order-nav"><i class="nav-link-ico"></i></li>
+					<li class="i-error-nav"><i class="nav-link-ico"></i></li>
+				</ul>
+			</div>
+		</div>
+		
+	</section>
+
+</div>
+<div class="app-children-room"></div>
+
+
+<script>
+	$(function() {
+		$('.icon-list-icons li').click(function() {
+			var classname = this.className;
+
+			$('.language-markup').html('<code>&lt;li class="nav-li-box '+ classname +'"></code>');
+
+			Prism.highlightAll(false, function(e){console.log('OK')})
+			$('#ico-dispaly-mod').removeClass().addClass(classname+' nav-li-box')
+		})
+	})
+
+
+</script>
