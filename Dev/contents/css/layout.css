@@ -628,10 +628,10 @@ input::-webkit-inner-spin-button {
 }
 .search-label {
 	display: inline-block;
-	width: 100px;
-	height: 32px;
+	width: 80px;
+	height: 28px;
 	font-size: 14px;
-	line-height: 32px;
+	line-height: 28px;
 	color: #09f;
 	border: 1px solid #09f;
 }
@@ -739,3 +739,7 @@ input::-webkit-inner-spin-button {
 }
 
 
+/* 分组 */
+.hui-group-mod {
+	margin: 15px 0;
+}
