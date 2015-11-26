@@ -1,0 +1,9 @@
+
+<div class="label-box">
+<% for ( var i of data) { %>
+	<label class="hui-label">
+		<input type="radio" name="<%= name %>" <% if (i.checked) { %> checked="checked" <% } %> />
+		<span><%= i.name %></span>
+	</label>
+<% } %>
+</div>

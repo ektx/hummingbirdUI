@@ -180,6 +180,19 @@ function wagesQuery(time) {
 
 
 // 生成月报表
+/*
+
+	<li class="wages-months-list" data-mod="">
+		<div class="wages-min-date">
+			<i>7</i>
+			<i>2015</i>
+		</div><div class="wages-month-list">
+			<p>$ 11,463.60</p>
+			<i>更多详细 &gt;</i>
+		</div>
+	</li>
+
+*/
 function wagesListHTMLMod(data) {
 	var json = '';
 	var html = '';

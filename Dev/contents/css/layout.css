@@ -299,7 +299,7 @@ input::-webkit-inner-spin-button {
 	transform: scale(.5);
 	-webkit-transform-origin: top left;
 	transform-origin: top left;
-	background: url(../img/nav/navico.png) no-repeat -30px -15px;
+	background: url(../img/nav/setnav.png) no-repeat -30px -15px;
 }
 
 /* 用户清单列表图标 */
@@ -321,8 +321,36 @@ input::-webkit-inner-spin-button {
 .i-order-nav .nav-link-ico {
 	background-position: -120px -107px;
 }
+/*错误*/
 .i-error-nav .nav-link-ico {
 	background-position: -119px -189px;
+}
+/*列表，清单*/
+.i-list-nav .nav-link-ico {
+	background-position: -119px -273px;
+}
+/* 设置 */
+.i-set-nav .nav-link-ico {
+	background-position: -30px -359px;
+}
+/* 菜单 */
+.i-nav-nav .nav-link-ico {
+	background-position: -119px -359px;
+}
+.i-nav2-nav .nav-link-ico {
+	background-position: -119px -441px;
+}
+/*回收站 Recycle Bin*/
+.i-recBin-nav .nav-link-ico {
+	background-position: -30px -441px;
+}
+/*用户*/
+.i-usr-nav .nav-link-ico {
+	background-position: -204px -16px;
+}
+/*用户*/
+.i-code-nav .nav-link-ico {
+	background-position: -204px -107px;
 }
 
 .nav-link-name {
@@ -621,34 +649,37 @@ input::-webkit-inner-spin-button {
 	height: 60px;
 }
 
-.search-style {
+.label-box {
 	text-align: center;
 	padding: 10px 0;
-	border-top: 1px solid #eee;
+	font-size: 0;
 }
-.search-label {
+.hui-label {
 	display: inline-block;
 	width: 80px;
 	height: 28px;
 	font-size: 14px;
 	line-height: 28px;
 	color: #09f;
-	border: 1px solid #09f;
+	border-width: 1px 1px 1px 0;
+	border-style: solid;
+	border-color: #09f;
 }
-.search-label input {
+.hui-label input {
 	display: none;
 }
-.search-label span {
+.hui-label span {
 	display: block;
 }
-.search-label input:checked + span {
+.hui-label input:checked + span {
 	background-color: #09f;
 	color: #fff;
 }
-.search-label:first-of-type {
+.hui-label:first-of-type {
+	border-left: 1px solid #09f;
 	border-radius: 3px 0 0 3px;
 }
-.search-label:last-of-type {
+.hui-label:last-of-type {
 	border-radius: 0 3px 3px 0;
 }
 

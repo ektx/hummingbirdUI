@@ -739,6 +739,7 @@ function genLoadHTML() {
 	自动按主菜单为框架页面生成主页面
 */
 function generationHomePage() {
+
 	// 自动生成主页面
 	var app_html = '',
 		load_id = '',
@@ -760,13 +761,16 @@ function generationHomePage() {
 
 	});
 
-	// 生成框架主体
-	$('.app-inner').html(app_html);
+	if (load_url) {
 
-	// 让默认的页面显示
-	if ($('.nav-active').size() > 0) {
-		load_url += '.html';
-		$('#'+load_id).load(load_url)
+		// 生成框架主体
+		$('.app-inner').html(app_html);
+
+		// 让默认的页面显示
+		if ($('.nav-active').size() > 0) {
+			load_url += '.html';
+			$('#'+load_id).load(load_url)
+		}
 	}
 
 }
