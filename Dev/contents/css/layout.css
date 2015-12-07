@@ -774,14 +774,17 @@ input::-webkit-inner-spin-button {
 }
 .hui-gp-usr-info h2,
 .hui-gp-usr-info p {
-	text-indent: 5px;
+	padding: 0 10px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	color: #999;
 }
+.hui-gp-usr-info p {
+	margin-bottom: 5px;
+}
 .hui-gp-usr-info h2 {
-	font-size: 1.3em;
+	font-size: 18px;
 	line-height: 2;
 	color: #333;
 }
