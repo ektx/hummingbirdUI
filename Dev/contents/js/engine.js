@@ -1,5 +1,5 @@
 /*!
- * VERSION: 0.2.2
+ * VERSION: 0.2.6
  * DATE: 2015-11-18
  * 
  * @author: zwl, ektx1989@icloud.com
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		handleStart($(this))
 
-	}).on('touchmove mousemove', moveOptions, function(e) {
+	}).on('touchmove mousemove', moveOptions, function() {
 
 		_this = $(this);
 
@@ -319,7 +319,8 @@ function setPopstate(pages) {
 
 function handleStart(_this) {
 
-	HUI.start = {}
+	HUI.start = {};
+
 	if (event.type === 'touchstart') {
 		HUI.start.pageX = event.touches[0].pageX;
 		HUI.start.pageY = event.touches[0].pageY
