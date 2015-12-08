@@ -792,7 +792,13 @@ input::-webkit-inner-spin-button {
 .hui-gp-usr-info p span:not(:last-child) {
 	margin-right: 10px;
 }
-
+/*查看更多*/
+.hui-gp-inner b.see-more {
+	color: #09F;
+}
+.hui-gp-inner .hide {
+	display: none
+}
 
 /* 分组 */
 .hui-group-mod {
