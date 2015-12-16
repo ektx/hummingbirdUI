@@ -1,11 +1,40 @@
 <%#
 	搜索模板 - 基础型
 	==========================================
+	
+	==========================================
 	@author: zwl
-	@time: 2015-11-20
+	@time: 2015-12-15
+
+	引用方式:
+	include('../parts/search/base', {
+		检索模板
+		'ctrlBox': 'String',
+		查询地址
+		'ctrlUrl': 'url'| false,
+		查询默认值
+		'ctrlDefD': {'postName':'postValue',..}|false,
+		回调函数
+		'ctrlFun': 'functionName'| false
+	})
+	string: '#my-customers-have-people,#my-customers-no-people[,...]'
+	
 %>
 
-<form class="hui-search-mod" action="">
+<form class="hui-search-mod" action=""
+	<% if (ctrlBox) { %> 
+		ctrl-box="<%= ctrlBox %>"
+	<% } %>
+	<% if (ctrlUrl) { %>
+		ctrl-url="<%= ctrlUrl %>"
+	<% } %> 
+	<% if (ctrlDefD) { %>
+		ctrl-url="<%= ctrlDefD %>"
+	<% } %> 
+	<% if (ctrlFun) { %>
+		ctrl-url="<%= ctrlFun %>"
+	<% } %> 
+	>
 	<div class="search-int-box">
 		<input type="search" placeholder="搜索" />
 		<input type="reset" value="清空" />
