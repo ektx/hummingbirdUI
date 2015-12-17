@@ -1,0 +1,43 @@
+<!-- 
+	主菜单模板
+	============================================
+	详细方法请参考 Nav API
+
+	## 说明
+	id 调用主页面id
+	url 页面内容关联页面
+	ico 菜单图标
+	txt 菜单名称
+	atc 是否为活动页面,只能有一个为true
+
+	// 引用方式：
+	include('parts/navMod', {
+	data: [
+		{
+			'id': 'home-page',
+			'url': 'icenter/search',
+			'ico': 'nav-stats',
+			'txt': '首页',
+			'act': true
+		},
+		{
+			'id': 'search-page',
+			'url': 'UI/home',
+			'ico': 'nav-stats',
+			'txt': '个人',
+			'act': false
+		} 
+	]
+	})
+
+-->
+<nav class="app-menu">
+<% for (var value of data) { %>
+	<div class="app-menu-nav <%= value.ico %>
+	<% if (value.act) { %>nav-active<%} %>
+	" dataid="<%= value.id %>" data-url="<%= value.url %>">
+		<div class="nav-ico"><i></i></div>
+		<p class="nav-name"><%= value.txt %></p>
+	</div>
+<% } %>
+</nav>

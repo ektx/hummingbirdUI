@@ -7,7 +7,7 @@
 	<!-- 主结构内容,内部添加你自己的代码 -->
 	<section id="hui-app" class="hummer-app">
 		
-		<!-- 你的代码 -->
+		<!-- 锁屏页面 -->
 		<%- include('parts/welcome') %>
 
 		<!-- 主内容 -->
@@ -16,7 +16,31 @@
 			<section class="app-inner"></section>
 			
 			<!-- 主菜单 -->
-			<%- include('parts/nav') %>
+			<%- include('parts/navMod', {
+				data: [
+					{
+						'id': 'home-page',
+						'url': 'UI/home',
+						'ico': 'nav-stats',
+						'txt': '首页',
+						'act': true
+					},
+					{
+						'id': 'search-page',
+						'url': 'iCenter/customer',
+						'ico': 'nav-money',
+						'txt': '查寻',
+						'act': false
+					},
+					{
+						'id': 'about-page',
+						'url': 'icenter/team',
+						'ico': 'nav-client',
+						'txt': '关于',
+						'act': false
+					}
+				]
+			}) %>
 		</section>
 		
 	</section>
@@ -32,7 +56,8 @@
 		<div class="load-animate"></div>
 		<p>Loading...</p>
 	</div>
-
+	
+	<!-- 通用 JavaScript -->
 	<%- include('parts/scripts') %>
 	
 </body>
