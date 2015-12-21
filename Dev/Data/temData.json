@@ -14,10 +14,7 @@
 					"loveType": [
 						{
 							"type":"Music",
-							"data":[
-								{"name":"天后"},
-								{"name": "Opening Titles"}
-							]
+							"data":["天后","Opening Titles","后退"]
 						},
 						{"type": "Movie"},
 						{"type": "Book"}

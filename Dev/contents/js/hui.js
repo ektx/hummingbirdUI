@@ -184,7 +184,6 @@ function generateTemHTML(temlpate, data) {
 		@JSON : JSON数据
 	*/
 	var generateTem = function(temNo, JSON) {
-		console.log('GEN: ' + temNo)
 
 		var templateHTML = temObj[temNo+'_'];
 		// 解析模板要处理的内容
@@ -194,15 +193,21 @@ function generateTemHTML(temlpate, data) {
 		var matchLen = matchArr.length;
 
 		// 如果数据是 Object
-		if (typeof JSON == 'object') {
+		if (typeof JSON == 'object' || typeof JSON == 'string') {
 			for (var m = 0; m < matchLen; m++) {
 				var arrVal = matchArr[m].replace(/\[{3}/, '');
 				
-				// 取值
-				dataVal = JSON[arrVal];
+				if (typeof JSON == 'string') {
+					templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, JSON)
+				}
 
-				if (dataVal) {
-					templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
+				else {
+					// 取值
+					dataVal = JSON[arrVal];
+
+					if (dataVal) {
+						templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
+					}
 				}
 			}
 		}
