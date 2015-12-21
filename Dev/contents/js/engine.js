@@ -1,5 +1,5 @@
 /*!
- * VERSION: 0.2.6
+ * VERSION: 0.2.3
  * DATE: 2015-11-18
  * 
  * @author: zwl, ektx1989@icloud.com
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		handleStart($(this))
 
-	}).on('touchmove mousemove', moveOptions, function() {
+	}).on('touchmove mousemove', moveOptions, function(e) {
 
 		_this = $(this);
 
@@ -319,8 +319,7 @@ function setPopstate(pages) {
 
 function handleStart(_this) {
 
-	HUI.start = {};
-
+	HUI.start = {}
 	if (event.type === 'touchstart') {
 		HUI.start.pageX = event.touches[0].pageX;
 		HUI.start.pageY = event.touches[0].pageY
@@ -599,79 +598,83 @@ function hideM(_this, backNav) {
 
 // 主菜单功能
 var nav = document.querySelector('.app-menu');
-nav.addEventListener('click', function(e) {
+if (nav) {
 
-	var activeCss = 'nav-active';
-	var _ = '';
+	nav.addEventListener('click', function(e) {
 
-	// 取得委托元素
-	function getEle(ele, classname) {
-		var _;
-		var run = function(ele, classname) {
-			if (ele.classList.contains(classname)) {
-				_ = ele;
-			} else {
+		var activeCss = 'nav-active';
+		var _ = '';
 
-				// 如果一直遍历到body了也找不到我们指定的内容
-				// 返回 false
-				if (ele.tagName === 'BODY') {
-					_ = false;
-				} 
-				// 查看父级内容中是否有
-				else {
-					run(ele.parentNode, classname)
+		// 取得委托元素
+		function getEle(ele, classname) {
+			var _;
+			var run = function(ele, classname) {
+				if (ele.classList.contains(classname)) {
+					_ = ele;
+				} else {
+
+					// 如果一直遍历到body了也找不到我们指定的内容
+					// 返回 false
+					if (ele.tagName === 'BODY') {
+						_ = false;
+					} 
+					// 查看父级内容中是否有
+					else {
+						run(ele.parentNode, classname)
+					}
 				}
 			}
+			run(ele, classname)
+
+			return _;
 		}
-		run(ele, classname)
 
-		return _;
-	}
+		_ = getEle(e.target, 'app-menu-nav');
 
-	_ = getEle(e.target, 'app-menu-nav');
+		if (_.classList.contains(activeCss)) return;
 
-	if (_.classList.contains(activeCss)) return;
+		// 状态修改
+		document.querySelector('.'+activeCss).classList.remove(activeCss)
+		_.classList.add(activeCss)
 
-	// 状态修改
-	document.querySelector('.'+activeCss).classList.remove(activeCss)
-	_.classList.add(activeCss)
+		var _id = _.getAttribute('dataid');
+		var _url = _.getAttribute('data-url');
+		var oldRoom = document.querySelector('.app-room-show');
+		var thisE = document.querySelector('#'+_id);
 
-	var _id = _.getAttribute('dataid');
-	var _url = _.getAttribute('data-url');
-	var oldRoom = document.querySelector('.app-room-show');
-	var thisE = document.querySelector('#'+_id);
+		// 切换动画
+		oldRoom.classList.toggle('app-room-show')
 
-	// 切换动画
-	oldRoom.classList.toggle('app-room-show')
+		thisE.className += ' app-room-fadeIn app-room-show';
+		// loading...
+		$('.hummer-load-mod').fadeIn();
 
-	thisE.className += ' app-room-fadeIn app-room-show';
-	// loading...
-	$('.hummer-load-mod').fadeIn();
+		// 请求页面
+		if (_url) {
+			var _inner = $('#'+_id);
+			_url += '.html'
 
-	// 请求页面
-	if (_url) {
-		var _inner = $('#'+_id);
-		_url += '.html'
-
-		_inner.hide()
-		
-		_inner.load(_url, function(res, status, xhr) {
-			_inner.fadeIn()
-			// loading...
+			_inner.hide()
+			
+			_inner.load(_url, function(res, status, xhr) {
+				_inner.fadeIn()
+				// loading...
+				$('.hummer-load-mod').hide()
+				// 移除路径减少请求
+				$('.nav-active').removeAttr('data-url')
+			})
+		} else {
+			// hide load...
 			$('.hummer-load-mod').hide()
-			// 移除路径减少请求
-			$('.nav-active').removeAttr('data-url')
-		})
-	} else {
-		// hide load...
-		$('.hummer-load-mod').hide()
-	}
-	
-	// 移除切换动画状态
-	setTimeout(function() {
-		thisE.classList.remove('app-room-fadeIn')
-	}, 410)
-});
+		}
+		
+		// 移除切换动画状态
+		setTimeout(function() {
+			thisE.classList.remove('app-room-fadeIn')
+		}, 410)
+	});
+}
+
 
 
 function showChild() {

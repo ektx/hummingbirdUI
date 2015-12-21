@@ -120,7 +120,7 @@ function getURLJSON(obj) {
 /*
 	用户列表
 	---------------------------------------------
-	zwl  2015-12-10
+	zwl  2015-12-21
 
 	@temlpate: 模板名称，最好是id,样式最好是唯一
 	@data: JSON数组数据
@@ -146,8 +146,11 @@ function getURLJSON(obj) {
 			</div>
 		</li>
 	</ul>
+
+	示例:
+	5级子模板调用示例 UI/temTest.ejs
 */
-function generateUsrList(temlpate, data) {
+function generateTemHTML(temlpate, data) {
 
 	// 自动生成模板的副本
 	// 目标是让用户只要处理自己目标的模板
@@ -180,10 +183,13 @@ function generateUsrList(temlpate, data) {
 		@templateHTML : 模板文件
 		@JSON : JSON数据
 	*/
-	var generateTem = function(templateHTML, JSON) {
-		
+	var generateTem = function(temNo, JSON) {
+		console.log('GEN: ' + temNo)
+
+		var templateHTML = temObj[temNo+'_'];
 		// 解析模板要处理的内容
-		var matchArr = templateHTML.match(/\[{3}.*?(?=\]{3})/g);
+		var matchArr = templateHTML.match(/\[{3}.*?(?=\]{3})/g) || [];
+
 		// 解析模板个数
 		var matchLen = matchArr.length;
 
@@ -194,9 +200,10 @@ function generateUsrList(temlpate, data) {
 				
 				// 取值
 				dataVal = JSON[arrVal];
-				dataVal = !dataVal ? '' : dataVal;
 
-				templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
+				if (dataVal) {
+					templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
+				}
 			}
 		}
 
@@ -234,6 +241,10 @@ function generateUsrList(temlpate, data) {
 
 				html = html.replace(reg, '___tem'+(_index+1))
 				obj['___tem'+_index] = html;
+
+				// console.log('Tem: '+ html)
+				html = html.replace(/(tem-data="\[{3}.*?\]{3}")|(tem-type="child-template")/gi, '')
+				obj['___tem'+_index+'_'] = html;
 				_index++;
 
 				createTem(elelment.find('[tem-type="child-template"]').eq(0))
@@ -241,6 +252,7 @@ function generateUsrList(temlpate, data) {
 			// 如果没有子模板,则返回就前模板
 			else {
 				obj['___tem'+_index] = html;
+				obj['___tem'+_index+'_'] = html;
 			}
 
 		}
@@ -256,7 +268,7 @@ function generateUsrList(temlpate, data) {
 		var rhtml = '';
 
 		// 如果数据要拆分工作的话
-		if (data.length) {
+		if (data.length && typeof data == 'object') {
 
 			for (var i = 0, len = data.length; i < len; i++) {
 				rhtml += generateTem(temlpateInner, data[i])
@@ -278,9 +290,10 @@ function generateUsrList(temlpate, data) {
 		对传入的指定模板进行生成,先判断是否有子模板的标记
 		如果有的话先处理子模板,以此类推
 	*/
-	var hasChildTem = function(temlpateInner, data) {
+	var hasChildTem = function(temNo, data) {
 
 		var cHTML = '';
+		var temlpateInner = temObj[temNo];
 
 		// 如果没有数据,不去处理模板
 		if (!data) return;
@@ -297,7 +310,7 @@ function generateUsrList(temlpate, data) {
 			// 目前不建议用户的子模板数超出2位数
 			var childTem  = temlpateInner.match(/___tem\d/)[0];
 			// 子模板
-			childTem = temObj[childTem];
+			//childTem = temObj[childTem];
 
 			// 获取返回的 HTML 代码
 			// 如果是 undefined 则使用 空
@@ -314,13 +327,11 @@ function generateUsrList(temlpate, data) {
 					cHTML = hasChildTem(childTem, childData) || '';
 				}
 			}
-			console.log(childData);
-			console.log(childTem);
 
 		}
 		// 替换
 		// 1.在没有了子
-		cHTML = runData(temlpateInner, data).replace(/___tem\d/g, cHTML)
+		cHTML = runData(temNo, data).replace(/___tem\d/g, cHTML)
 		return cHTML;
 	}
 
@@ -330,11 +341,12 @@ function generateUsrList(temlpate, data) {
 	// 处理传来的总的条数据
 	for (var i =0, len = data.length; i < len; i++) {
 		// debugger
-		html += hasChildTem(temObj.___tem0, data[i])
+		html += hasChildTem('___tem0', data[i])
 	}
 
 	return html;
 }
+
 
 /*
 	公共查询
@@ -412,10 +424,10 @@ function displaySearch(data, findType) {
 	}
 
 	if (findType == 'emp') {
-		html = generateUsrList('#search-usr-list-template', data)
+		html = generateTemHTML('#search-usr-list-template', data)
 		$('#search-usr-list-template').html(html).removeAttr('style').find('li').show()
 	} else {
-		html = generateUsrList('#search-cus-list-template', data)
+		html = generateTemHTML('#search-cus-list-template', data)
 		$('#search-cus-list-template').html(html).removeAttr('style').find('li').show()
 	}
 

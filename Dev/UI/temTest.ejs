@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>模板生成测试</title>
+</head>
+<body>
+	<ul id="myTeams-template">
+		<li>
+			<h3>[[[name]]]</h3>
+
+			<!-- 2级模板 -->
+			<ul tem-type="child-template" tem-data="[[[group]]]">
+
+				<li>
+					<h4>[[[name]]]</h4>
+
+					<!-- 3级模板 -->
+					<ul tem-type="child-template" tem-data="[[[love]]]">
+						<li>
+							<h4>[[[loveName]]]</h4>
+
+							<!-- 4级模板 -->
+							<ul tem-type="child-template" tem-data="[[[loveType]]]">
+								<li>
+									[[[type]]]
+
+									<!-- 5级模板 -->
+									<ul tem-type="child-template" tem-data="[[[data]]]">
+										<li>
+											[[[name]]]
+										</li>
+									</ul>
+								</li>
+
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	
+	<script src="../contents/js/jquery-2.1.4.min.js"></script>
+	<script src="../contents/js/hui.js"></script>
+
+
+</body>
+<script>
+	$.ajax({
+		type: 'get',
+		url: '../data/temData.json',
+		dataType: 'json'
+	})
+	.done(function(data) {
+		console.log(data)
+		var html = generateTemHTML('#myTeams-template' , data);
+		$('#myTeams-template').html(html)
+	})
+</script>
+</html>
