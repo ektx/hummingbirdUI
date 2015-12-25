@@ -234,11 +234,18 @@ input::-webkit-inner-spin-button {
 	background-color: #06c;
 }
 
+.blue-txt-btn {
+	color: #09f;
+	border: 1px solid #09f;
+}
+.blue-txt-btn:hover {
+	background: #D0E9F9;
+}
 
 /* nav ul */
 .nav-box-mod {
 	width: 100%;
-	padding: 16px 0 60px;
+	padding: 16px 0;
 }
 .nav-box-inner {
 	margin-bottom: 16px;

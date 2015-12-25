@@ -10,7 +10,7 @@
 
 $(function() {
 	// 用户列表收缩效果
-	$('.hui-group-box').on('click', 'h1', function() {
+	$('.hui-group-list-mod').on('click', '.hui-group-box > h1', function() {
 		var _ = $(this);
 
 		_.find('i').toggleClass('close').end().next('ul').toggle(400)

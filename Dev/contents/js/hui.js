@@ -71,6 +71,16 @@ $(function() {
 			$(ctrl_box).find('li').show();
 	});
 
+
+	// 用户列表收缩效果
+	$('.app-inner').on('click', '.hui-group-box > h1', function() {
+		var _ = $(this);
+
+		_.find('i').toggleClass('close').end().next('ul').toggle(400)
+	});
+
+
+
 })
 
 
@@ -456,3 +466,183 @@ function generateDoubleList(data) {
 	return html
 }
 
+
+/*
+	查询客户列表
+	----------------------------------------
+*/
+function getMyCus(name) {
+
+	$.ajax({
+		type: 'POST',
+		url: '/MisService.asmx/MyCustomer',
+		dataType: 'json',
+		data: JSON.stringify({'name' : decodeURI(name)}),
+		contentType: 'application/json;charset=utf-8'
+	})
+	.done(function(data) {
+
+		var html = generateCustomerList(getJSON(data).inservice);
+		$('#my-customers-have-people').html(html);
+
+		html = generateCustomerList(getJSON(data).noservice);
+		$('#my-customers-no-people').html(html)
+
+	})
+	.fail(function(err){
+		console.error(err)
+	})
+}
+
+
+/*
+	设置时间选择
+	-------------------------------------
+
+*/
+function setSelectMod() {
+
+	var d = new Date();
+	var sld = ' selected="selected" ';
+	var box = $('.select-time');
+
+	var setYearMod = function(selectTime) {
+		var opt = '<select>';
+		var y = d.getFullYear();
+
+		for (var i = 0; i < 20; i++) {
+			var _y = y - i;
+			var _s = '';
+
+			if (_y == selectTime) {
+				_s = sld;
+			}
+
+			opt += '<option value="' + _y +'"'+_s+'>'+_y+'年</option>';
+		}
+
+		opt += '</select>';
+
+		return opt;
+
+	}
+
+	var setMonthMod = function(setMonth) {
+		var m = d.getMonth();
+		var opt = '<select>';
+
+		for (var i = 1; i < 13; i++) {
+			var _s = '';
+
+			if (i == setMonth) {
+				_s = sld;
+			}
+			
+			opt += '<option value="' + i +'"'+_s+'>'+i+'月</option>';
+		}
+
+		opt += '</select>';
+		return opt;
+	}
+
+	// Delay 转成数字
+	var toNumber = function(str) {
+		return Number(str.replace(/Y|M|D/g, ''))
+	}
+
+
+	box.each(function(index, el) {
+		var _this = $(this);
+		var type = _this.attr('select-type');
+		// 延迟数组; 如：延迟2年3个月 select-delay=2Y3M
+		var delay = _this.attr('select-delay') || false;
+		// 默认时间;
+		// $$ 表示当前时间;今年1月,$$-1
+		// 数字表示指定时间;2015年4月 2015-4
+		var defaultT = _this.attr('selDef-time') || false;
+
+		var html = '';
+		// 将格式数组化
+		var typeArr = type.match(/\w{2}|-/g);
+		var defArr  = defaultT ? defaultT.match(/\${2}|-|\d+/g) : [];
+
+		// 按格式生成指定的 HTML
+		for (var i = 0, l = typeArr.length; i < l; i++) {
+			if (typeArr[i] == 'yy') {
+				var t = d.getFullYear();
+				if (defaultT) {
+					if (defaultT[i] != '$$' && !isNaN(defaultT[i])) {
+						t -= Number(defaultT[i])
+					}
+				} else if (delay) {
+					t -= Number(delay.match(/\d+(?=Y)/g)[0])
+				}
+
+				html += setYearMod(t)
+			} 
+			else if (typeArr[i] == 'mm') {
+				var t = d.getMonth() + 1;
+				if (defaultT) {
+					if (defArr[i] != '$$' && !isNaN(defArr[i])) {
+						t = Number(defaultT[i])
+					}
+				}
+				else if (delay) {
+					t -= Number(delay.match(/\d+(?=M)/)[0])
+				}
+
+				html += setMonthMod(t)
+			} 
+			else {
+				html += '-'
+			}
+		}
+
+		_this.html(html)
+		
+	});
+
+}
+
+
+// 延时请求查询关键字
+var toQquerySelectTime;
+/*
+    取得请求时间
+    ---------------------------------------------------
+    开始时间和结束时间
+    @delayTime: 延迟处理时间，这样可以有时间让用户选择自己要的时间
+    @sort: 是否从小到大输出时间 true | false
+    @callback: 回调时间的处理函数
+*/
+function getQuerySelectTime(delayTime, sort, callback) {
+    clearTimeout(toQquerySelectTime);
+    var arr = []
+
+    toQquerySelectTime = setTimeout(function() {
+
+        $('.select-time:visible').each(function(e) {
+            var _ = $(this);
+            var html = '';
+
+            _.find('select').each(function(e) {
+                var _val = $(this).val()
+                html += _val > 9 ? _val : '0'+_val
+            })
+
+            arr.push(html)
+        })
+
+        if (sort && arr.length >= 2) {
+            // 从小到大
+            arr.sort(function(a, b) {
+                return Number(a) > Number(b) ? 1: -1
+            })
+        }
+
+
+        if (callback) callback(arr)
+
+    }, delayTime)
+
+}
