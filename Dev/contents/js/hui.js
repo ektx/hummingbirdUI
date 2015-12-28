@@ -176,6 +176,7 @@ function generateTemHTML(temlpate, data) {
 	// 判断备用模板在不在
 	if (tem2.size() > 0) {
 		tem = tem2.html();
+		temlpate = temlpate2
 	} else {
 		var mod = $(temlpate);
 		tem = mod.html();
