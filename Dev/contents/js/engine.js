@@ -81,6 +81,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 					console.log(status)
 
+					// 当页面成功导入后，在导入内容前加上引用地址
+					if (status == 'success') {
+						elemet.children('.app-inner-room').before('<!-- LOAD:'+_url+' -->')
+					}
+
 					if (!!callback) {
 						eval(callback)
 					}

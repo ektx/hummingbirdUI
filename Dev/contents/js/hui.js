@@ -18,6 +18,8 @@ $(function() {
 		var ctrl_box = _form.attr('ctrl-box');
 		var callback = _form.attr('ctrl-fun');
 		var ctrl_url = _form.attr('ctrl-url') || '';
+		// 查询方式
+		var search_type = _form.attr('search-type') || false;
 
 		// 展开所有列隐藏所有列表
 		$(ctrl_box).show().find('li').hide();
@@ -37,7 +39,7 @@ $(function() {
 				}
 			});
 		}
-		// 如果已经没有数据且有url，则尝试请求
+		// 在有 url 情况下，则尝试请求
 		else {
 
 			// 如果为空不去查询
@@ -49,8 +51,20 @@ $(function() {
 			};
 
 			return delaySearch = setTimeout(function() {
-				// 如果有回调函数，则运行查询
-				if (callback) search(val, ctrl_box);
+				// 新旧方法区分
+				if (search_type) {
+					var c_data = {
+						val : val,
+						url: ctrl_url,
+						ele: ctrl_box
+					}
+					if (callback) eval(callback)(c_data)
+				}
+				// 如果没有指定查询类型，则用老的方法
+				else {
+					// 如果有回调函数，则运行查询
+					if (callback) search(val, ctrl_box);
+				}
 			}, 600)
 		}
 
@@ -207,7 +221,6 @@ function generateTemHTML(temlpate, data) {
 		if (typeof JSON == 'object' || typeof JSON == 'string') {
 			for (var m = 0; m < matchLen; m++) {
 				var arrVal = matchArr[m].replace(/\[{3}/, '');
-				
 				if (typeof JSON == 'string') {
 					templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, JSON)
 				}
@@ -215,10 +228,9 @@ function generateTemHTML(temlpate, data) {
 				else {
 					// 取值
 					dataVal = JSON[arrVal];
+					dataVal = dataVal ? dataVal : '<无>'
 
-					if (dataVal) {
-						templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
-					}
+					templateHTML = templateHTML.replace(/\[{3}.*?\]{3}/, dataVal)
 				}
 			}
 		}
@@ -378,11 +390,16 @@ function search(value, element) {
 	// 是否有多地址查询
 	var isLabels = _form.find('.label-box').size();
 	// 表单的 url集
-	var url = JSON.parse(_form.attr('ctrl-url').replace(/\'/g, '"'));
+	var url = _form.attr('ctrl-url').replace(/\'/g, '"');
+	if (url.indexOf('"') > -1) {
+		url = JSON.parse(url)
+	}
 	// 表单提交的值
-	var PData = JSON.parse(_form.attr('ctrl-data').replace(/\'/g,'"')) || '';
+	var ctrlD = _form.attr('ctrl-data') || false;
+	var PData =  ctrlD ? ctrlD.indexOf('\'') > -1 ? JSON.parse(ctrlD.replace(/\'/g,'"')) : ctrlD : ctrlD;
 	// 默认值
-	var defDate = JSON.parse(_form.attr('ctrl-defD').replace(/\'/g, '"')) || '';
+	var defD = _form.attr('ctrl-defD')
+	var defDate = defD ? defD.indexOf('\'') > -1 ? JSON.parse(defD.replace(/\'/g, '"')) : defD : defD;
 	// 查询后运行函数
 	var callback = _form.attr('ctrl-fun') || false;
 
@@ -391,7 +408,7 @@ function search(value, element) {
 	}
 
 	// 取请求值的 url
-	url = url[findType];
+	url = findType ? url[findType] : url;
 
 	// 如果有请求值的话
 	if (PData) {
