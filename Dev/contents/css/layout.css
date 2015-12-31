@@ -4,7 +4,8 @@
 	------------------------------
 	CSS                 layout.css
  */
-
+/* 选择时间的样式 */
+@import url('../../UI/time/time.css');
 
 body, section, div, span, figure,
 h1, h2, h3, h4, p,
@@ -810,4 +811,16 @@ input::-webkit-inner-spin-button {
 /* 分组 */
 .hui-group-mod {
 	margin: 15px 0;
+}
+
+.hui-webkit-box {
+	display: -webkit-box;
+	display: -moz-box;
+	display: box;
+}
+
+.hui-flex-box {
+	-webkit-box-flex: 1;
+	-moz-box-flex: 1;
+	box-flex: 1;
 }

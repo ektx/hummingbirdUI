@@ -1,0 +1,156 @@
+<%#
+	BOSS 收入情况报表
+	----------------------------------------
+%>
+<div class="app-inner-room has-nav-room">
+	<!-- 查询功能 -->
+	<ul class="nav-ul-box nav-clos-box">
+		<li class="nav-li-box i-search-nav">
+			<div class="nav-li-ico"></div>
+			<div class="nav-li-inner">
+				<div class="select-time-box">
+					<div class="title">开始时间:</div>
+
+					<div class="inner select-time" select-type="yy-mm" selDef-time="$$-1"></div>
+				</div>
+			</div>
+		</li>
+		<li class="nav-li-box i-search-nav">
+			<div class="nav-li-ico"></div>
+			<div class="nav-li-inner">
+				<div class="select-time-box">
+					<div class="title">结束时间:</div>
+					<div class="inner select-time" select-type="yy-mm" select-delay="2Y3M"></div>
+				</div>
+			</div>
+		</li>
+		<li class="nav-li-box i-search-nav">
+			<div class="nav-li-ico"></div>
+			<div class="nav-li-inner">
+				<div class="select-time-box">
+					<div class="title">结束时间:</div>
+					<div class="inner select-time" select-type="yy-mm"></div>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+	<button id="setTime" class="btn">生成时间</button>
+	<button id="getTime" class="btn">得到时间</button>
+	<button id="sortTime" class="btn">排序时间</button>
+
+	<section class="html5-date-mod">
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="date">
+				</div>
+			</div>
+		</div>
+
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="datetime">
+				</div>
+			</div>
+		</div>
+
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="datetime-local">
+				</div>
+			</div>
+		</div>
+
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="month">
+				</div>
+			</div>
+		</div>
+
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="week">
+				</div>
+			</div>
+		</div>
+
+		<div class="hui-time-box">
+			<div class="hui-webkit-box hui-time-inner">
+				<span>时间:</span>
+				<div class="hui-flex-box">
+					<span class="time-display">2015年12月1日</span>
+					<input type="time" placeholder="18:00">
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<div class="app-children-room"></div>
+
+<script>
+	document.getElementById('setTime').addEventListener('click', function() {
+		// HUI 
+		setSelectMod()
+	})
+
+	document.getElementById('getTime').addEventListener('click', function() {
+		// HUI 
+		getQuerySelectTime(0, false, function(time) {
+			alert(time)
+		})
+	})
+
+	document.getElementById('sortTime').addEventListener('click', function() {
+		// HUI 
+		getQuerySelectTime(0, true, function(time) {
+			alert(time)
+		})
+	})
+	var platform = navigator.userAgent.toLocaleLowerCase()
+alert(platform)
+	$('.hui-time-box input').each(function() {
+		var d = new Date();
+		var time = d.toLocaleDateString();
+
+		if (/android|windows/.test(platform)) {
+			$(this).parent('div').addClass('time-pc-PF')
+		}
+		else if (/iphone/.test(platform)) {
+
+			$(this).val(time).prev().text(time)
+		}
+	})
+
+
+	$('input').change(function() {
+		var val = $(this).val()
+		var type = this.type;
+
+		console.log(val)
+		console.log(type)
+		var d = new Date(val);
+
+		if (type == 'date')
+			d = d.toLocaleDateString();
+
+		$(this).prev().text(d)
+	})
+</script>

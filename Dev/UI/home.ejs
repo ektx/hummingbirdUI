@@ -3,109 +3,15 @@
 		<%- include('../parts/ui/usr') %>
 
 		<div class="nav-box-inner">
-			<ul class="nav-ul-box nav-clos-box">
-				<li class="nav-li-box i-set-nav" data-mod="ui/setico-mod" data-mod-t="[[inner]]">
+			<ul id="home-nav-template" class="nav-ul-box nav-clos-box">
+				<li class="nav-li-box [[[icon]]]" data-mod="[[[mod]]]-mod" data-mod-t="[[inner]]">
 					<div class="nav-li-ico">
 						<div class="nav-link-ico-box">
 							<div class="nav-link-ico"></div>
 						</div>
 					</div>
 					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>设置菜单图标</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-health-nav" data-mod="iCenter/health/health-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>信息展示示例</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-health-nav" data-mod="iCenter/button-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>按钮展示示例</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-search-nav" data-mod="UI/search-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>搜索展示示例</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-list-nav" data-mod="UI/ul-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>列表信息示例</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-list-nav"
-				 	data-mod="iCenter/timeSelect-mod" 
-				 	data-mod-t="[[inner]]"
-				>
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>时间示例</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-code-nav" data-mod="UI/label-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>label标签</b></div>
-						<div class="nav-more-ico">
-							<i></i>
-						</div>
-					</div>
-				</li>
-				<li class="nav-li-box i-usr-nav" data-mod="iCenter/points-mod" data-mod-t="[[inner]]">
-					<div class="nav-li-ico">
-						<div class="nav-link-ico-box">
-							<div class="nav-link-ico"></div>
-						</div>
-					</div>
-					<div class="nav-li-inner">
-						<div class="nav-link-name"><b>雇员变动信息统计</b></div>
+						<div class="nav-link-name"><b>[[[name]]]</b></div>
 						<div class="nav-more-ico">
 							<i></i>
 						</div>
@@ -117,3 +23,7 @@
 	</section>
 </div>
 <div id="toNavList" class="app-children-room"></div>
+
+<script>
+	$.getScript('contents/js/HUI/home.js')
+</script>
