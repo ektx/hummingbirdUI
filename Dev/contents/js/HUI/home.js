@@ -12,7 +12,7 @@ var nav = [
 		"name" : "信息展示示例"
 	},
 	{
-		"mod": "iCenter/health/button",
+		"mod": "iCenter/button",
 		"title": "[[inner]]",
 		"icon" : "i-health-nav",
 		"name" : "按钮展示示例"
@@ -42,6 +42,13 @@ var nav = [
 		"name" : "label标签"
 	},
 	{
+
+		"mod": "UI/label",
+		"title": "[[inner]]",
+		"icon" : "i-code-nav",
+		"name" : "alert弹层"
+	},
+	{
 		"mod": "iCenter/points",
 		"title": "[[inner]]",
 		"icon" : "i-usr-nav",
@@ -50,4 +57,5 @@ var nav = [
 ]
 
 var html = generateTemHTML('#home-nav-template', nav);
+
 $('#home-nav-template').html(html)
