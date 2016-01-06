@@ -1,6 +1,7 @@
 @charset 'utf-8';
 
 .alert-mod {
+	display: none;
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -17,6 +18,17 @@
 	height: auto;
 	margin-left: -155px;
 	transform: translateY(-50%);
+	animation: slideIn .4s ease;
+}
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(0%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(-50%);
+	}
 }
 .alert-inner header {
 	text-align: center;

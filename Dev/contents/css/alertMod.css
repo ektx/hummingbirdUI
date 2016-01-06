@@ -1,0 +1,30 @@
+@charset 'utf-8';
+
+.hui-alert-mod {
+	background-color: #fff;
+}
+
+.hui-alert-mod input {
+	display: block;
+	width: 100%;
+	padding: 10px 0;
+	border: none;
+	background-color: #f5f5f5;
+	text-indent: 6px;
+	font-size: 14px;
+	outline: none;
+}
+#alert-txt {
+	width: 100%;
+	border: 0;
+	background-color: #f5f5f5;
+	margin: 10px 0;
+	padding: 6px;
+	box-sizing: border-box;
+	font-size: 14px;
+	outline: none;
+}
+#alert-txt:focus,
+.hui-alert-mod input:focus {
+    box-shadow: inset 2px 2px 2px #eee;
+}

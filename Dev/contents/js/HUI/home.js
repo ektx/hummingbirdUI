@@ -43,7 +43,7 @@ var nav = [
 	},
 	{
 
-		"mod": "UI/label",
+		"mod": "UI/alertMod",
 		"title": "[[inner]]",
 		"icon" : "i-code-nav",
 		"name" : "alert弹层"

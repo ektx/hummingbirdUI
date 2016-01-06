@@ -95,6 +95,7 @@ $(function() {
 
 
 
+
 })
 
 
@@ -429,4 +430,50 @@ function getQuerySelectTime(delayTime, sort, callback) {
 
     }, delayTime)
 
+}
+
+
+/*
+	alert-mod
+	--------------------------------------
+	AlertMod({
+		title: '标题',
+		inner: 'my alert mod',
+		canTxt: false,
+		okTxt : 'ok',
+		callback: function(){}
+	})
+*/
+function AlertMod(obj) {
+	var title = obj.title || '标题',
+		inner = obj.inner,
+		cancelBtnTxt = obj.canTxt || 'CANCEL',
+		okBtnTxt = obj.okTxt || 'OK';
+		callback = obj.callback || false;
+	var html = '';
+
+		$('.alert-mod header').text(title)
+		.siblings('div.alert-body').html(inner)
+
+		// 如果 cancelBtnTxt = false,则可以不显示此按钮
+		if (cancelBtnTxt) {
+			html += '<button id="hui-alert-cancel" value="false">'+cancelBtnTxt+'</button>'
+		}
+		// 
+		if (okBtnTxt) {
+			html += '<button id="hui-alert-ok" value="true">'+okBtnTxt+'</button>'
+		} else {
+			console.log('okBtnTxt 不可以设定为 false')
+		}
+
+		$('.alert-mod').show();
+
+		$('.hui-webkit-box').unbind().on('click', 'button', function() {
+
+			var _this = $(this);
+
+			if (callback) callback(_this);
+
+			$('.alert-mod').fadeOut();
+		})
 }

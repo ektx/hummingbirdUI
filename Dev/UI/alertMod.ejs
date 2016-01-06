@@ -1,0 +1,35 @@
+<div class="app-inner-room has-nav-room">
+	
+	<section class="app-inner-box hui-alert-mod">
+		<div>
+			<input type="text" placeholder="输入标题">
+		</div>
+		<div>
+			<textarea name="" id="alert-txt" cols="30" rows="10">输入你要弹层显示的内容</textarea>
+		</div>
+		<div>
+			<button id="alert" class="btn blue-btn">弹层</button>
+		</div>
+
+	</section>
+
+</div>
+<div class="app-children-room"></div>
+
+<script>
+	$('#alert').click(function() {
+
+		var inner = $.trim($('#alert-txt').val());
+
+		var title = $.trim($('#alert-title').val());
+		
+		AlertMod({
+			title: title,
+			inner: inner,
+			canTxt: false,
+			okTxt : 'ok',
+			callback: false
+		})
+		
+	})	
+</script>
