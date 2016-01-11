@@ -359,7 +359,7 @@ function setSelectMod() {
 					if (defaultT[i] != '$$' && !isNaN(defaultT[i])) {
 						t -= Number(defaultT[i])
 					}
-				} else if (delay) {
+				} else if (delay && delay.indexOf('Y') > -1) {
 					t -= Number(delay.match(/\d+(?=Y)/g)[0])
 				}
 
@@ -372,7 +372,7 @@ function setSelectMod() {
 						t = Number(defaultT[i])
 					}
 				}
-				else if (delay) {
+				else if (delay && delay.indexOf('Y') > -1) {
 					t -= Number(delay.match(/\d+(?=M)/)[0])
 				}
 

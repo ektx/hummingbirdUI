@@ -706,6 +706,9 @@ input::-webkit-inner-spin-button {
 .hui-label:last-of-type {
 	border-radius: 0 3px 3px 0;
 }
+.hui-label:only-child {
+	border-radius: 3px;
+}
 
 /* 下拉小图标 ▲ */
 .drop-down-mod {
