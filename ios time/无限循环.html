@@ -5,21 +5,22 @@
 	<title>Demo</title>
 	<style>
 	.mod {
-		width: 400px;
-		height: 400px;
+		width: 300px;
+		height: 300px;
 		margin: 200px auto;
 		border: 2px solid #000;
 	
 	}
 	.box{
 		position: relative;
+		height: 100%;
 		/*overflow: hidden*/
 	}
 	.child {
 		position: absolute;
 		top: 0;
-		width: 100%;
-		height: 750px;
+		width: 420px;
+		height: 100%;
 		opacity: .8;
 		z-index: 1
 	}
@@ -39,13 +40,14 @@
 	<div class="mod">
 		<div class="box">
 			<div class="child red current"></div>
-			<div class="child yellow ready" style="transform: translateY(750px)"></div>
+			<div class="child yellow ready" style="transform: translatex(420px)"></div>
 		</div>
 	</div>
 
 
 	<ul style="position: fixed; top: 0">
-		<li id="move-s"></li>
+		<li id="newBoxPosX-s"></li>
+		<li ><span id="zf"></span></li>
 	</ul>
 	<script src="jquery.js"></script>
 	<script>
@@ -53,55 +55,100 @@
 	$('.mod')
 	.mousedown(function(e) {
 		console.log(e)
-		startX = e.originalEvent.layerY;
+		startX = e.originalEvent.layerX;
 
 		// 获取当前的位置信息
-		boxPositionY = getTransForm('.box')
+		boxPositionX = getTransForm('.box')
 
 		console.log('原始位置：'+startX )
 	
 	})
 	.mousemove(function(e) {
 		if (e.buttons === 1) {
-			var move = e.originalEvent.layerY - startX
-			var newBoxPosY = boxPositionY + move;
+			var move = e.originalEvent.layerX - startX
+			var newBoxPosX = boxPositionX + move;
 
-			// console.log()
-			// console.log(newBoxPosY)
+			var start_X = newBoxPosX
 
-				
+			$('#newBoxPosX-s').text(newBoxPosX)
+
 			$('.child').each(function(index) {
-				var iPositionY = getTransForm($(this));
+				var iPositionX = getTransForm($(this));
+				var ipositionE = iPositionX + 420;
 
+				console.log(index, '开始点:', iPositionX + newBoxPosX)
+				console.log(index, '结束点:', iPositionX + newBoxPosX + 420)
 
-				if (move < 0) {
-					var whereI = iPositionY + 750;
-
-					console.log(index, iPositionY, whereI)
-
-					console.log('-_-', newBoxPosY ,whereI < newBoxPosY)
-					if (whereI < Math.abs(newBoxPosY)) {
-						$(this).css({
-							transform: 'translate3d(0, ' +(whereI+750)+'px,0)'
-						})
-					}
+				if (iPositionX + newBoxPosX > 0 && iPositionX + newBoxPosX < 300) {
+					console.log('在之间,部分显示')
 				} else {
-					var whereI = iPositionY;
+					console.log('开始点 在外面了')
+					if (iPositionX + newBoxPosX < 0 ) {
+						console.log('- 在前')
 
-					console.log(index, iPositionY, whereI)
-					console.log('-&-', newBoxPosY, whereI )
+						if (iPositionX + newBoxPosX + 420 > 0) {
+							
+							if (iPositionX + newBoxPosX + 420 > 300) {
+								console.log('全部显示中')
+							} else {
+								console.log('尾部显示中')
+							}
+						}
 
-					if (iPositionY  > 400){
-						// $(this).css({
-						// 	transform: 'translate3d(0, ' +(-750)+'px,0)'
-						// })
+						else {
+
+							var buffer = 0 - (420 - 300)/2;
+
+							if (iPositionX + newBoxPosX + 420 < buffer) {
+
+								$(this).css({
+									transform: 'translate3d('+(iPositionX+ 420 *2)+'px,0,0)'
+								})
+
+							}
+							
+						}
+
+
+					} else if (iPositionX + newBoxPosX > 300 ) {
+						console.log('- 在后');
+
+						var buffer = (420 - 300)/2 + 300;
+
+						if (iPositionX + newBoxPosX > buffer) {
+
+							$(this).css({
+								transform: 'translate3d('+(iPositionX- 420 *2)+'px,0,0)'
+							})
+						}
 					}
 				}
+
+				// if (iPositionX + 420 < start_X) {
+				// 	$(this).css({
+				// 		transform: 'translate3d('+(iPositionX+ 420 *2)+'px,0,0)'
+				// 	})
+
+				// 	return
+				// }
+
+				// var whereI = iPositionX + 750;
+
+				// console.log(index, iPositionX, whereI)
+
+				// console.log('-_-', newBoxPosY ,whereI < Math.abs(newBoxPosY))
+				// if (whereI < Math.abs(newBoxPosY)) {
+				// 	$(this).css({
+				// 		transform: 'translate3d(0, ' +(whereI+750)+'px,0)'
+				// 	})
+				// }
+
+
 			})
 
 
 			$('.box').css({
-				transform: 'translate3d(0,'+newBoxPosY+'px, 0)'
+				transform: 'translate3d('+newBoxPosX+'px, 0,0)'
 			})
 
 		}
@@ -112,7 +159,7 @@
 		var getTransForm = $(element).css('transform');
 		getTransForm = getTransForm == 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : getTransForm; 
 		
-		return Number(getTransForm.split(',')[5].replace(')',''));		
+		return Number(getTransForm.split(',')[4].replace(')',''));		
 	}
 	</script>
 </body>
