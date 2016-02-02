@@ -15,7 +15,7 @@
 	.box{
 		position: relative;
 		height: 100%;
-		transition: transform 400ms ease;
+		/*transition: transform 400ms ease;*/
 	}
 	.child {
 		position: absolute;
@@ -50,8 +50,25 @@
 		<li id="newBoxPosX-s"></li>
 		<li ><span id="zf"></span></li>
 	</ul>
+	<label>
+		<input id="hide" type="checkbox">hide
+	</label>
 	<script src="jquery.js"></script>
 	<script>
+
+	document.getElementById('hide').addEventListener('click', function() {
+		var isChecked = document.getElementById('hide').checked;
+
+		if (isChecked) {
+			document.getElementsByClassName('mod')[0].style.overflow = 'hidden'
+		} else {
+			document.getElementsByClassName('mod')[0].style.overflow = 'initial'
+			
+		}
+	})
+
+
+
 	var currentY, boxPositionY;
 	var eventTime = {};
 	var eventPosition = {};
@@ -76,7 +93,12 @@
 
 			$('#newBoxPosX-s').text(newBoxPosX)
 
-			moveI(newBoxPosX)
+			moveChild(newBoxPosX)
+
+			// 设置顶层移动距离
+			$('.box').css({
+				transform: 'translate3d('+newBoxPosX+'px, 0,0)'
+			})
 
 		}
 	})
@@ -86,16 +108,56 @@
 		console.log(eventTime, eventPosition)
 
 		var useT = eventTime.end - eventTime.start;
-		var useL = Math.abs(eventPosition.endX - eventPosition.startX);
+		var useL = eventPosition.endX - eventPosition.startX;
 
 		var useS = useL / useT;
+		var goTime = 400;
+
+		// 如果移动时间大于这个动画时间
+		// 我们认为你是不用加速运动的
+		if (useT > goTime) return
+
+		var nowPosition = getTransForm($('.box'))
+		var willGoTo = useS * goTime;
+		var willGo   = willGoTo + nowPosition;
+		console.log(willGoTo, willGo)
+
+		$('.box').css({
+			transform: 'translate3d('+willGo+'px,0,0)',
+			transition: 'transform '+goTime+'ms ease'
+		})
+
+		setTimeout(function() {
+			$('.box').css({
+				transition: 'transform 0ms ease'
+			})
+
+		}, goTime)
+
+
+		// @delay: 动画帧数
+		// @duration: 动画运行时间
+		// @delta: 对进度操作
+		// @step: 每一帧操作
+		animate({
+			delay: 10,
+			duration: goTime,
+			delta: makeEaseOut(quad),
+			step: function(delta) {
+				var newVal = willGoTo * delta
+				console.log(newVal)
+				moveChild(newVal+ nowPosition)
+
+			}
+		})
 
 		console.log(useT, 'ms')
 		console.log(useL, 'px')
 		console.log(useS * 200, 'px/ms')
 	});
 	
-
+	
+	// 获取元素当前 translateX 值
 	function getTransForm (element) {
 		var getTransForm = $(element).css('transform');
 		getTransForm = getTransForm == 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : getTransForm; 
@@ -103,10 +165,37 @@
 		return Number(getTransForm.split(',')[4].replace(')',''));		
 	}
 
+	function quad(progress) {
+		return Math.pow(progress, 5)
+	}
+
+	function makeEaseOut(delta) {
+		return function(progress) {
+			return 1 - delta(1 - progress)
+		}
+	}
+
+	function animate(opts) {
+
+		var start = new Date
+		
+		var id = setInterval(function() {
+			var timePassed = new Date - start;
+			// 进程，已经完成了多少，从0到1
+			var progress = timePassed / opts.duration
+
+			if (progress > 1) progress = 1;
+
+			var delta = opts.delta(progress)
+			opts.step(delta)
+
+			if (progress == 1) clearInterval(id)
+		}, opts.delay || 10)
+	}
 
 	// 移动主框架
 	// @newPosition 新地址
-	function moveI (newPosition) {
+	function moveChild (newPosition) {
 
 		$('.child').each(function(index) {
 			var iPositionX = getTransForm($(this));
@@ -134,15 +223,15 @@
 			// 相对结束位置
 			var relativeE = relativeX + 420;
 
-			console.log(index, '开始点:', relativeX)
-			console.log(index, '结束点:', relativeE)
+			// console.log(index, '开始点:', relativeX)
+			// console.log(index, '结束点:', relativeE)
 
 
 			// 我们来判断开始点的位置
 			// 如果是在 0 到 300 那么,一定是在显示区中
 			// 此时只有开始的部分能看到
 			if (relativeX > 0 && relativeX < 300) {
-				console.log('在之间,部分显示')
+				// console.log('在之间,部分显示')
 			} 
 			// 如果不在 0 到 300 之间
 			// 那么可能是在 0 前,那就是移动到了左边
@@ -159,11 +248,11 @@
 						// ::这里主要是状态说明,并没有实际作用
 						// 如果还大于 300 那就是全部显示中,独占显示区
 						if (relativeE > 300) {
-							console.log('全部显示中')
+							// console.log('全部显示中')
 						} 
 						// 反之则是只有尾部部分在了,快要结束或只是开始
 						else {
-							console.log('尾部显示中')
+							// console.log('尾部显示中')
 						}
 					}
 
@@ -207,10 +296,7 @@
 
 		});
 
-		// 设置顶层移动距离
-		$('.box').css({
-			transform: 'translate3d('+newPosition+'px, 0,0)'
-		})
+
 
 	}
 	</script>
