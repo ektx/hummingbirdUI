@@ -21,7 +21,7 @@
 	.child {
 		position: absolute;
 		top: 0;
-		width: 420px;
+		width: 600px;
 		height: 100%;
 		opacity: .8;
 		z-index: 1
@@ -42,7 +42,7 @@
 	<div class="mod">
 		<div class="box">
 			<div class="child red current"></div>
-			<div class="child yellow ready" style="transform: translatex(420px)"></div>
+			<div class="child yellow ready" style="transform: translatex(600px)"></div>
 		</div>
 	</div>
 
@@ -73,6 +73,8 @@
 	var evtIOSTimeMod = {}
 	evtIOSTimeMod.eventTime = {}
 	evtIOSTimeMod.eventPosition = {}
+	evtIOSTimeMod.eventPosition.start = {}
+	evtIOSTimeMod.eventPosition.end = {}
 	evtIOSTimeMod.ishold = false;
 
 	$('.mod')
@@ -86,12 +88,15 @@
 	mod.addEventListener('touchend', moveEnd, false)
 	
 	
-	// 获取元素当前 translateX 值
+	// 获取元素当前 translate 值
 	function getTransForm (element) {
-		var getTransForm = $(element).css('transform');
-		getTransForm = getTransForm == 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : getTransForm; 
+		var getVal = $(element).css('transform');
+		getVal = getVal == 'none' ? 'matrix(1, 0, 0, 1, 0, 0)' : getVal; 
 		
-		return Number(getTransForm.split(',')[4].replace(')',''));		
+		return {
+			x : Number(getVal.split(',')[4]),
+			y : Number(getVal.split(',')[5].replace(')',''))
+		}
 	}
 
 	function quad(progress) {
@@ -122,35 +127,54 @@
 		}, opts.delay || 10)
 	}
 
+
+	function quickMove(newPosition) {
+		moveChild(newPosition, true)
+
+		// 设置顶层移动距离
+		$('.box').css({
+			transform: 'translate3d('+newPosition+'px, 0,0)'
+		})
+	}
+
 	// 移动主框架
 	// @newPosition 新地址
-	function moveChild (newPosition) {
+	// @checkPosition 是否要验证内部元素的位置
+	function moveChild (newPosition, checkPosition) {
 
 		$('.child').each(function(index) {
-			var iPositionX = getTransForm($(this));
+			var iPositionX = getTransForm($(this)).x;
 			var _getIPX = 0;
+			var _w = evtIOSTimeMod.style.width;
 
-			// 计算
-			if (iPositionX%(420*2) == 0) {
-				_getIPX = 0 - Math.ceil(newPosition/(420*2))*420*2;
-			} else {
-				_getIPX = 420 - Math.ceil(newPosition/(420*2))*420*2;
-			}
+			if (checkPosition) {
 
-			// 如果和计算的值不相等，自动变成相等
-			if (_getIPX !== iPositionX) {
+				// 计算
+				// 用来确认当前元素的位置
+				// 当在 控制台中使用 moveChild(number, true) 时，
+				// 这里会计算与这个number之间的位移
+				// 如果不对，自动校正
+				if (iPositionX % (_w*2) == 0) {
+					_getIPX = 0 - Math.ceil(newPosition/(_w*2))*_w*2;
+				} else {
+					_getIPX = _w - Math.ceil(newPosition/(_w*2))*_w*2;
+				}
 
-				iPositionX = _getIPX;
+				// 如果和计算的值不相等，自动变成相等
+				if (_getIPX !== iPositionX) {
 
-				$(this).css({
-					transform: 'translate3d('+iPositionX+'px,0,0)'
-				})
+					iPositionX = _getIPX;
+
+					$(this).css({
+						transform: 'translate3d('+iPositionX+'px,0,0)'
+					})
+				}
 			}
 
 			// 相对开始位置
 			var relativeX = iPositionX + newPosition;
 			// 相对结束位置
-			var relativeE = relativeX + 420;
+			var relativeE = relativeX + _w;
 
 			// console.log(index, '开始点:', relativeX)
 			// console.log(index, '结束点:', relativeE)
@@ -191,12 +215,12 @@
 						// 我们设置一个缓冲
 						// 不用让它一过显示区就移动位置
 						// 万一用户马上回来又要移动位置,这样操作太频繁了
-						var buffer = 0 - (420 - 300)/2;
+						var buffer = 0 - (_w - 300)/2;
 
 						// 当结束点也小于缓冲区了,开始移动到新位置上
 						if (relativeE < buffer) {
 							$(this).css({
-								transform: 'translate3d('+(iPositionX+ 420 *2)+'px,0,0)'
+								transform: 'translate3d('+(iPositionX+ _w *2)+'px,0,0)'
 							})
 
 						}
@@ -210,14 +234,14 @@
 				// 那它就看不见
 				else if (relativeX > 300 ) {
 
-					var buffer = (420 - 300)/2 + 300;
+					var buffer = (_w - 300)/2 + 300;
 
 					// 同时它还在可视位置后的缓冲之外
 					// 那它直接移动新位置上
 					if (relativeX > buffer) {
 
 						$(this).css({
-							transform: 'translate3d('+(iPositionX- 420 *2)+'px,0,0)'
+							transform: 'translate3d('+(iPositionX- _w *2)+'px,0,0)'
 						})
 					}
 				}
@@ -228,24 +252,29 @@
 	}
 
 	function moveStart(e) {
-		console.log(e.type)
 
 		if (e.type === 'mousedown') {
-			evtIOSTimeMod.eventPosition.startX = e.originalEvent.layerX;
+			evtIOSTimeMod.eventPosition.start.x = e.originalEvent.layerX;
+			evtIOSTimeMod.eventPosition.start.y = e.originalEvent.layerY;
 		} 
 		// touchstart
 		else {
 			console.log(e)
-			evtIOSTimeMod.eventPosition.startX = e.touches[0].pageX;
+			evtIOSTimeMod.eventPosition.start.x = e.touches[0].pageX;
+			evtIOSTimeMod.eventPosition.start.y = e.touches[0].pageY;
 		}
 
 		evtIOSTimeMod.eventTime.start = e.timeStamp;
-		evtIOSTimeMod.ishold = true;			
+		evtIOSTimeMod.ishold = true;
+		// 内部元素的大小
+		evtIOSTimeMod.style = {}
+		evtIOSTimeMod.style.width = $(this).find('.child').width()			
+		evtIOSTimeMod.style.height = $(this).find('.child').height()			
 
 		// 获取当前的位置信息
-		evtIOSTimeMod.boxPositionX = getTransForm('.box');
+		evtIOSTimeMod.boxPositionX = getTransForm('.box').x;
 
-		console.log('原始位置：'+evtIOSTimeMod.eventPosition.startX );
+		console.log('原始位置：'+evtIOSTimeMod.eventPosition.start.x );
 
 	}
 
@@ -257,19 +286,17 @@
 
 			if (e.type === 'mousemove') {
 
-				move = e.originalEvent.layerX - evtIOSTimeMod.eventPosition.startX
+				move = e.originalEvent.layerX - evtIOSTimeMod.eventPosition.start.x
 
 			} else {
-				move = e.touches[0].pageX - evtIOSTimeMod.eventPosition.startX
+				move = e.touches[0].pageX - evtIOSTimeMod.eventPosition.start.x
 			}
 
 			var newBoxPosX = evtIOSTimeMod.boxPositionX + move;
 
-			var start_X = newBoxPosX
-
 			$('#newBoxPosX-s').text(move)
 
-			moveChild(newBoxPosX)
+			moveChild(newBoxPosX, false)
 
 			// 设置顶层移动距离
 			$('.box').css({
@@ -281,12 +308,13 @@
 	function moveEnd(e) {
 
 		if (e.type === 'mouseup') {
-			evtIOSTimeMod.eventPosition.endX = e.originalEvent.layerX;
+			evtIOSTimeMod.eventPosition.end.x = e.originalEvent.layerX;
+			evtIOSTimeMod.eventPosition.end.y = e.originalEvent.layerY;
 			
 		}
 		else {
-			console.log(e)
-			evtIOSTimeMod.eventPosition.endX = e.changedTouches[0].pageX;
+			evtIOSTimeMod.eventPosition.end.x = e.changedTouches[0].pageX;
+			evtIOSTimeMod.eventPosition.end.y = e.changedTouches[0].pageY;
 		}
 
 		evtIOSTimeMod.ishold = false;
@@ -296,7 +324,7 @@
 		// 移动时间
 		var useT = evtIOSTimeMod.eventTime.end - evtIOSTimeMod.eventTime.start;
 		// 移动的距离
-		var useL = evtIOSTimeMod.eventPosition.endX - evtIOSTimeMod.eventPosition.startX;
+		var useL = evtIOSTimeMod.eventPosition.end.x - evtIOSTimeMod.eventPosition.start.x;
 
 		// 移动速度
 		var useS = useL / useT;
@@ -307,7 +335,7 @@
 		// 我们认为你是不用加速运动的
 		if (useT < goTime/2 && Math.abs(useL) > 0) {
 			// 得到鼠标结束时的位置
-			var nowPosition = getTransForm($('.box'))
+			var nowPosition = getTransForm($('.box')).x
 			// 缓冲距离
 			var willGoTo = useS * goTime;
 			// 缓冲后达到的位置
@@ -338,7 +366,7 @@
 				step: function(delta) {
 					var newVal = willGoTo * delta
 					// console.log(newVal)
-					moveChild(newVal+ nowPosition)
+					moveChild(newVal+ nowPosition, false)
 
 				}
 			})
