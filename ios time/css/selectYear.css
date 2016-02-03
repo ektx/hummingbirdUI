@@ -1,0 +1,44 @@
+@charset 'utf-8';
+
+
+ul, li {
+	margin: 0;
+	padding: 0;
+}
+li {
+	list-style: none;
+	line-height: 48px;
+	text-align: center;
+	font-size: 16px;
+}
+.mod {
+	width: 300px;
+	height: 300px;
+	margin: 200px auto 0;
+	border: 2px solid #000;
+	overflow: hidden
+
+}
+.box{
+	position: relative;
+	height: 100%;
+	/*transition: transform 400ms ease;*/
+}
+.child {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: auto;
+	opacity: .8;
+	z-index: 1
+}
+.red {
+	background: red
+}
+.yellow {
+	background: yellow;
+}
+
+.current {
+	top: 0;
+}
