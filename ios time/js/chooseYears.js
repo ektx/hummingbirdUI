@@ -293,6 +293,10 @@ function moveEnd(e) {
 		var willGo   = willGoTo + nowPosition;
 		// console.log(willGoTo, willGo)
 
+		if (willGo%48 != 0) {
+			willGo = Math.ceil(willGo/48) * 48
+		}
+
 		$('.box').css({
 			transform: 'translate3d(0, '+willGo+'px, 0)',
 			transition: 'transform '+goTime+'ms ease'
@@ -321,16 +325,9 @@ function moveEnd(e) {
 				transition: 'transform 0ms ease'
 			})
 
-			// 校正位置
-			var correction = Math.ceil(willGo/48)*48;
-			console.log(correction)
-			evtIOSTimeMod.boxPosition._y = correction;
-			
-			quickMove(correction)
+			updateTime(willGo)
 
-			updateTime(correction)
-
-		}, goTime+10)
+		}, goTime+15)
 
 
 	} else {
@@ -348,5 +345,11 @@ function moveEnd(e) {
 
 
 function getNowTime(translate) {
-	return (2010 + (Math.abs(translate / 48)%30)).toFixed(0)
+	var val = 0;
+	if (translate < 0) {
+		val = 2010 + (Math.abs(translate / 48)%30)
+	} else {
+		val = 2010 + (30 - (Math.abs(translate / 48)%30))
+	}
+	return val.toFixed(0)
 }
