@@ -127,8 +127,8 @@ function moveChild (newPosition, checkPosition) {
 		// 相对结束位置
 		var relativeE = relativeY + _h;
 
-		console.log(index, '开始点:', relativeY)
-		console.log(index, '结束点:', relativeE)
+		// console.log(index, '开始点:', relativeY)
+		// console.log(index, '结束点:', relativeE)
 
 		// 我们来判断开始点的位置
 		// 先假定原点在左上角
@@ -144,7 +144,7 @@ function moveChild (newPosition, checkPosition) {
 		// |================|
 		if (relativeY >= 0) {
 			if (relativeY > _BoxH) {
-				console.log('>= 你在容器的后面了')
+				// console.log('>= 你在容器的后面了')
 
 				var buffer = (_h - _BoxH) /2 + _BoxH;
 
@@ -156,30 +156,30 @@ function moveChild (newPosition, checkPosition) {
 			} else {
 
 				if (relativeE > _BoxH) {
-					console.log('>= 你显示了头部')
+					// console.log('>= 你显示了头部')
 					if (relativeY < _BoxH/2) {
 						setActive($(this))
 					}
 				} else {
-					console.log('>= 你全部显示了！')
+					// console.log('>= 你全部显示了！')
 					setActive($(this))
 				}
 			}
 		} else {
 			if (relativeE > 0) {
 				if (relativeE >= _BoxH) {
-					console.log('< 你全部显示了！')
+					// console.log('< 你全部显示了！')
 					setActive($(this))
 				} else {
 
-					console.log('< 你的尾巴出来了...')
+					// console.log('< 你的尾巴出来了...')
 
 					if (relativeE > _BoxH/2) {
 						setActive($(this))
 					}
 				}
 			} else {
-				console.log('< 你在原点前面哟...')
+				// console.log('< 你在原点前面哟...')
 				// 我们设置一个缓冲
 				// 不用让它一过显示区就移动位置
 				// 万一用户马上回来又要移动位置,这样操作太频繁了
@@ -386,5 +386,6 @@ function getNowTime(translate) {
 		val = defaultNo + (size - (Math.abs(translate / liH)% size))
 	}
 
+	val += 2;
 	return val.toFixed(0)
 }
