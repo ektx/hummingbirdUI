@@ -1,4 +1,22 @@
 
+$(function() {
+	var deg = 360 / 30;
+	$('.child li').each(function(index) {
+		console.log(index)
+		// if (index < 15) {
+		// 	$(this).css({
+		// 		transform: 'rotateX('+index * deg + 'deg)'
+		// 	})
+			
+		// } else {
+			$(this).css({
+				transform: 'rotateX('+(180 - index * deg )+ 'deg)'
+			})
+		// }
+	})
+})
+
+
 document.getElementById('hide').addEventListener('click', function() {
 	var isChecked = document.getElementById('hide').checked;
 
@@ -387,7 +405,5 @@ function getNowTime(translate) {
 	}
 
 	val += 2;
-	// $('li').removeClass()
-	// $('.active [data-val="'+(val+1)+'"]').addClass('next1')
 	return val.toFixed(0)
 }
