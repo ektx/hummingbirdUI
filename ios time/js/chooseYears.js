@@ -19,10 +19,7 @@ evtIOSTimeMod.eventPosition.start = {}
 evtIOSTimeMod.eventPosition.end = {}
 evtIOSTimeMod.ishold = false;
 
-$('.mod')
-.mousedown(moveStart)
-.mousemove(holdMove)
-.mouseup(moveEnd);
+$('.mod').mousedown(moveStart).mousemove(holdMove).mouseup(moveEnd);
 
 var mod = document.querySelector('.mod');
 mod.addEventListener('touchstart', moveStart, false)
@@ -71,6 +68,7 @@ function animate(opts) {
 
 
 function quickMove(newPosition) {
+
 	moveChild(newPosition, true)
 
 	// 设置顶层移动距离
@@ -87,7 +85,14 @@ function moveChild (newPosition, checkPosition) {
 	$('.child').each(function(index) {
 		var iPositionY = getTransForm($(this)).y;
 		var _getIPX = 0;
-		var _w = evtIOSTimeMod.style.height;
+		// ul的高
+		var _h = evtIOSTimeMod.style.height;
+		// 容器高
+		var _BoxH = evtIOSTimeMod.boxStyle.height;
+
+		var setActive = function(ele) {
+			ele.addClass('active').siblings().removeClass('active')
+		}
 
 		if (checkPosition) {
 
@@ -96,10 +101,10 @@ function moveChild (newPosition, checkPosition) {
 			// 当在 控制台中使用 moveChild(number, true) 时，
 			// 这里会计算与这个number之间的位移
 			// 如果不对，自动校正
-			if (iPositionY % (_w*2) == 0) {
-				_getIPX = 0 - Math.ceil(newPosition/(_w*2))*_w*2;
+			if (iPositionY % (_h*2) == 0) {
+				_getIPX = 0 - Math.ceil(newPosition/(_h*2))*_h*2;
 			} else {
-				_getIPX = _w - Math.ceil(newPosition/(_w*2))*_w*2;
+				_getIPX = _h - Math.ceil(newPosition/(_h*2))*_h*2;
 			}
 
 			// 如果和计算的值不相等，自动变成相等
@@ -113,78 +118,81 @@ function moveChild (newPosition, checkPosition) {
 			}
 		}
 
+		// 偏移量，默认为0，也就是盒子的顶部为原点
+		// 现在因为是滚轮，那么中间才是原点
+		var deviation = 0
+		// var deviation = evtIOSTimeMod.style.liHeight *2
 		// 相对开始位置
 		var relativeY = iPositionY + newPosition;
 		// 相对结束位置
-		var relativeE = relativeY + _w;
+		var relativeE = relativeY + _h;
 
 		console.log(index, '开始点:', relativeY)
 		console.log(index, '结束点:', relativeE)
 
 		// 我们来判断开始点的位置
-		// 如果是在 0 到 300 那么,一定是在显示区中
+		// 先假定原点在左上角
+		// 那么高度可以显示的大小就是 0 到容器的高
+		// 如果是在 0 到 高之间那么,一定是在显示区中
 		// 此时只有开始的部分能看到
-		if (relativeY > 0 && relativeY < 300) {
-			// console.log('在之间,部分显示')
-		} 
-		// 如果不在 0 到 300 之间
-		// 那么可能是在 0 前,那就是移动到了左边
-		// 要么在 300 之后,移动到了右边
-		else {
+		// |----------------|
+		// |                |
+		// |                |
+		// |                |    在这容器中
+		// |================| <- 开始点
+		// |================|
+		// |================|
+		if (relativeY >= 0) {
+			if (relativeY > _BoxH) {
+				console.log('>= 你在容器的后面了')
 
-			// 如果是在 0 前面
-			if (relativeY < 0 ) {
+				var buffer = (_h - _BoxH) /2 + _BoxH;
 
-				// 那么我们看下结束点在那
-				// 如果结束点 > 0,那就是在显示区中
-				if (relativeE > 0) {
-					
-					// ::这里主要是状态说明,并没有实际作用
-					// 如果还大于 300 那就是全部显示中,独占显示区
-					if (relativeE > 300) {
-						// console.log('全部显示中')
-					} 
-					// 反之则是只有尾部部分在了,快要结束或只是开始
-					else {
-						// console.log('尾部显示中')
-					}
-				}
-
-				// 如果小于 0,那么说明它整个都已经移过了显示区
-				else {
-
-					// 我们设置一个缓冲
-					// 不用让它一过显示区就移动位置
-					// 万一用户马上回来又要移动位置,这样操作太频繁了
-					var buffer = 0 - (_w - 300)/2;
-
-					// 当结束点也小于缓冲区了,开始移动到新位置上
-					if (relativeE < buffer) {
-						$(this).css({
-							transform: 'translate3d(0,'+(iPositionY+ _w *2)+'px,0)'
-						})
-
-					}
-					
-				}
-
-
-			} 
-
-			// 如果当前位置在 300 之后
-			// 那它就看不见
-			else if (relativeY > 300 ) {
-
-				var buffer = (_w - 300)/2 + 300;
-
-				// 同时它还在可视位置后的缓冲之外
-				// 那它直接移动新位置上
 				if (relativeY > buffer) {
-
 					$(this).css({
-						transform: 'translate3d(0,'+(iPositionY- _w *2)+'px,0)'
+						transform: 'translate3d(0,'+(iPositionY- _h *2)+'px,0)'
 					})
 				}
+			} else {
+
+				if (relativeE > _BoxH) {
+					console.log('>= 你显示了头部')
+					if (relativeY < _BoxH/2) {
+						setActive($(this))
+					}
+				} else {
+					console.log('>= 你全部显示了！')
+					setActive($(this))
+				}
+			}
+		} else {
+			if (relativeE > 0) {
+				if (relativeE >= _BoxH) {
+					console.log('< 你全部显示了！')
+					setActive($(this))
+				} else {
+
+					console.log('< 你的尾巴出来了...')
+
+					if (relativeE > _BoxH/2) {
+						setActive($(this))
+					}
+				}
+			} else {
+				console.log('< 你在原点前面哟...')
+				// 我们设置一个缓冲
+				// 不用让它一过显示区就移动位置
+				// 万一用户马上回来又要移动位置,这样操作太频繁了
+				var buffer = 0 - (_h - _BoxH)/2;
+
+				// 当结束点也小于缓冲区了,开始移动到新位置上
+				if (relativeE < buffer) {
+					$(this).css({
+						transform: 'translate3d(0,'+(iPositionY+ _h *2)+'px,0)'
+					})
+
+				}
+
 			}
 		}
 
@@ -193,6 +201,13 @@ function moveChild (newPosition, checkPosition) {
 }
 
 function moveStart(e) {
+
+	var _ = $(this);
+
+	// 清除缓冲效果
+	$('.box').css({
+		transition: 'transform 0s ease'
+	})
 
 	if (e.type === 'mousedown') {
 		evtIOSTimeMod.eventPosition.start.x = e.originalEvent.layerX;
@@ -206,10 +221,19 @@ function moveStart(e) {
 
 	evtIOSTimeMod.eventTime.start = e.timeStamp;
 	evtIOSTimeMod.ishold = true;
+
+	// 主容器大小
+	evtIOSTimeMod.boxStyle = {};
+	evtIOSTimeMod.boxStyle.width = _.width()
+	evtIOSTimeMod.boxStyle.height = _.height()
+
 	// 内部元素的大小
+	var _child = _.find('.child')
 	evtIOSTimeMod.style = {}
-	evtIOSTimeMod.style.width = $(this).find('.child').width()			
-	evtIOSTimeMod.style.height = $(this).find('.child').height()			
+	evtIOSTimeMod.style.width = _child.width()			
+	evtIOSTimeMod.style.height = _child.height()
+	evtIOSTimeMod.style.liHeight = 	_.find('li').height();
+	evtIOSTimeMod.style.liSize = $('.child li').size() / 2;		
 
 	// 获取当前的位置信息
 	evtIOSTimeMod.boxPosition = {}
@@ -275,10 +299,10 @@ function moveEnd(e) {
 	var useS = useL / useT;
 	// 缓冲时间
 	var goTime = 500;
+	var liH = evtIOSTimeMod.style.liHeight;
 
 	// 更新时间
 	var updateTime = function(nowPoint) {
-		console.log('nowPoint:'+nowPoint)
 		document.getElementById('year').innerText = getNowTime(nowPoint)
 	}
 
@@ -293,8 +317,8 @@ function moveEnd(e) {
 		var willGo   = willGoTo + nowPosition;
 		// console.log(willGoTo, willGo)
 
-		if (willGo%48 != 0) {
-			willGo = Math.ceil(willGo/48) * 48
+		if (willGo % liH != 0) {
+			willGo = Math.ceil(willGo/ liH) * liH
 		}
 
 		$('.box').css({
@@ -321,9 +345,6 @@ function moveEnd(e) {
 		})
 
 		setTimeout(function() {
-			$('.box').css({
-				transition: 'transform 0ms ease'
-			})
 
 			updateTime(willGo)
 
@@ -332,9 +353,18 @@ function moveEnd(e) {
 
 	} else {
 		// 校正位置
-		var correction = Math.ceil(evtIOSTimeMod.boxPosition._y/48)*48;
+		var correction = Math.ceil(evtIOSTimeMod.boxPosition._y/liH)*liH;
 		evtIOSTimeMod.boxPosition._y = correction;
-		quickMove(correction)
+		
+		moveChild(correction, false)
+
+		updateTime(correction)
+
+		// 设置顶层移动距离
+		$('.box').css({
+			transform: 'translate3d(0, '+correction+'px, 0)',
+			transition: 'transform .3s ease'
+		})
 	}
 
 
@@ -343,13 +373,18 @@ function moveEnd(e) {
 	// console.log(useS * 200, 'px/ms')
 }
 
-
+// 返回当前时间
+// @translate 当前的总位移
 function getNowTime(translate) {
-	var val = 0;
-	if (translate < 0) {
-		val = 2010 + (Math.abs(translate / 48)%30)
+	var val = 0, liH = evtIOSTimeMod.style.liHeight;
+	var size = evtIOSTimeMod.style.liSize;
+	var defaultNo = 2010;
+
+	if (translate <= 0) {
+		val = defaultNo + (Math.abs(translate / liH)% size)
 	} else {
-		val = 2010 + (30 - (Math.abs(translate / 48)%30))
+		val = defaultNo + (size - (Math.abs(translate / liH)% size))
 	}
+
 	return val.toFixed(0)
 }
