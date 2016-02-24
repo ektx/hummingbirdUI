@@ -11,6 +11,42 @@ document.getElementById('hide').addEventListener('click', function() {
 })
 
 
+$(function() {
+	// 生成时间选择列表
+	$('.mod').each(function() {
+		var _ = $(this);
+
+		var box = _.find('.box');
+		var timeType = box.attr('ios-time-type');
+		var minTime  = box.attr('ios-time-min');
+		var maxTime  = box.attr('ios-time-max');
+
+		var timeLength = maxTime - minTime;
+		var outUL = '<ul class="child">';
+		var outList = '';
+
+		for (var i = 0; i <= timeLength; i++) {
+			var nowTime = Number(minTime) + i;
+			outList += '<li data-val="' + nowTime +'">'+nowTime+'</li>';
+		}
+		outUL = '<ul class="child">'+ outList+ '</ul>'
+
+		if (timeLength > 5) {
+			outUL += '<ul class="child" style="transform: translatey(100%)">' + outList + '</ul>';
+		}
+
+		box.html(outUL);
+
+
+		// 定位时间
+		var nowYear = new Date().getFullYear();
+		// var 
+	})
+
+
+
+})
+
 
 var evtIOSTimeMod = {}
 evtIOSTimeMod.eventTime = {}
@@ -66,13 +102,13 @@ function animate(opts) {
 	}, opts.delay || 10)
 }
 
-
-function quickMove(newPosition) {
+// 快速定位
+function quickMove(element, newPosition) {
 
 	moveChild(newPosition, true)
 
 	// 设置顶层移动距离
-	$('.box').css({
+	$(element).find('.box').css({
 		transform: 'translate3d(0,'+newPosition+'px,0)'
 	})
 }
@@ -80,9 +116,9 @@ function quickMove(newPosition) {
 // 移动主框架
 // @newPosition 新地址
 // @checkPosition 是否要验证内部元素的位置
-function moveChild (newPosition, checkPosition) {
-
-	$('.child').each(function(index) {
+function moveChild (newPosition, checkPosition, element) {
+console.log(element)
+	$(element).find('.child').each(function(index) {
 		var iPositionY = getTransForm($(this)).y;
 		var _getIPX = 0;
 		// ul的高
@@ -222,6 +258,9 @@ function moveStart(e) {
 	evtIOSTimeMod.eventTime.start = e.timeStamp;
 	evtIOSTimeMod.ishold = true;
 
+	// 默认开始时间
+	evtIOSTimeMod.defaultNo = Number(_.find('.box').attr('ios-time-min'))
+
 	// 主容器大小
 	evtIOSTimeMod.boxStyle = {};
 	evtIOSTimeMod.boxStyle.width = _.width()
@@ -237,7 +276,7 @@ function moveStart(e) {
 
 	// 获取当前的位置信息
 	evtIOSTimeMod.boxPosition = {}
-	evtIOSTimeMod.boxPosition.y = getTransForm('.box').y;
+	evtIOSTimeMod.boxPosition.y = getTransForm(_.children('.box')).y;
 
 	console.log('原始位置：'+evtIOSTimeMod.eventPosition.start.y );
 
@@ -245,9 +284,9 @@ function moveStart(e) {
 
 function holdMove(e) {
 	e.preventDefault();
-
 	if (e.buttons === 1 || evtIOSTimeMod.ishold) {
-		var move;
+		var move, _ = $(this);
+		// console.log(_.attr('class'))
 
 		if (e.type === 'mousemove') {
 
@@ -262,19 +301,22 @@ function holdMove(e) {
 		// 当前年份
 		evtIOSTimeMod.year = getNowTime(evtIOSTimeMod.boxPosition._y)
 
+		// 输出值
 		$('#newBoxPosX-s').text(evtIOSTimeMod.boxPosition._y)
 		.next().find('span').text(evtIOSTimeMod.year)
 
-		moveChild(evtIOSTimeMod.boxPosition._y, false)
+		moveChild(evtIOSTimeMod.boxPosition._y, false, this)
 
 		// 设置顶层移动距离
-		$('.box').css({
+		$(this).children('.box').css({
 			transform: 'translate3d(0, '+evtIOSTimeMod.boxPosition._y+'px, 0)'
 		})
 	}
 }
 
 function moveEnd(e) {
+
+	console.log('END:', $(this))
 
 	if (e.type === 'mouseup') {
 		evtIOSTimeMod.eventPosition.end.x = e.originalEvent.layerX;
@@ -310,7 +352,7 @@ function moveEnd(e) {
 	// 我们认为你是不用加速运动的
 	if (useT < goTime/2 && Math.abs(useL) > 0) {
 		// 得到鼠标结束时的位置
-		var nowPosition = getTransForm($('.box')).y
+		var nowPosition = getTransForm($(this).children('.box')).y
 		// 缓冲距离
 		var willGoTo = useS * goTime;
 		// 缓冲后达到的位置
@@ -321,7 +363,7 @@ function moveEnd(e) {
 			willGo = Math.ceil(willGo/ liH) * liH
 		}
 
-		$('.box').css({
+		$(this).children('.box').css({
 			transform: 'translate3d(0, '+willGo+'px, 0)',
 			transition: 'transform '+goTime+'ms ease'
 		})
@@ -338,7 +380,7 @@ function moveEnd(e) {
 				var newVal = willGoTo * delta
 				var newPoint = newVal + nowPosition
 				
-				moveChild(newPoint, false)
+				moveChild(newPoint, false, this)
 
 				updateTime(newPoint)
 			}
@@ -356,12 +398,12 @@ function moveEnd(e) {
 		var correction = Math.ceil(evtIOSTimeMod.boxPosition._y/liH)*liH;
 		evtIOSTimeMod.boxPosition._y = correction;
 		
-		moveChild(correction, false)
+		moveChild(correction, false, this)
 
 		updateTime(correction)
 
 		// 设置顶层移动距离
-		$('.box').css({
+		$(this).children('.box').css({
 			transform: 'translate3d(0, '+correction+'px, 0)',
 			transition: 'transform .3s ease'
 		})
@@ -380,14 +422,13 @@ function getNowTime(translate) {
 	var size = evtIOSTimeMod.style.liSize;
 	var defaultNo = 2010;
 
+	translate -= 2 * liH;
+
 	if (translate <= 0) {
 		val = defaultNo + (Math.abs(translate / liH)% size)
 	} else {
 		val = defaultNo + (size - (Math.abs(translate / liH)% size))
 	}
 
-	val += 2;
-	// $('li').removeClass()
-	// $('.active [data-val="'+(val+1)+'"]').addClass('next1')
 	return val.toFixed(0)
 }
